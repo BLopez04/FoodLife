@@ -1,0 +1,18 @@
+{
+  "name": "cs-307-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "../../cs-307-app/node_modules/.bin/vite packages/react-frontend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
