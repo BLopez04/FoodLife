@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "../../cs-307-app/node_modules/.bin/vite packages/react-frontend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
   }
 }
