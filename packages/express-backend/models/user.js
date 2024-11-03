@@ -47,7 +47,7 @@ const Table = mongoose.model("Table", TableSchema);
 const DaySchema = new mongoose.Schema(
   {
     date: {
-      type: String,
+      type: Date,
       required: true,
       trim: true,
     },
