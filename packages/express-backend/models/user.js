@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { TableSchema } from "./table.js";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -8,8 +9,13 @@ const UserSchema = new mongoose.Schema(
       trim: true
     },
     table: {
-      type: Schema.Types.ObjectId,
-      ref: "Table"
+      type: TableSchema,
+      default: {
+        personalBudget: 0.0,
+        mealplanBudget: 0.0,
+        groceryBudget: 0.0,
+        tableDays: []
+      }
     }
   },
   { collection: "users_list" }
@@ -17,3 +23,4 @@ const UserSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", UserSchema);
 export default User;
+export { UserSchema };

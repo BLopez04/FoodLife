@@ -4,10 +4,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
-import tableService from "./services/table-service.js";
-const { getUsers, addUser, findUserById, findUserByUsername, deleteUser } =
+const { getUsers, addUser, findUserById, findUserByUsername, findTableByUserId, deleteUser } =
   userService;
-const { getTables, findTableById, deleteTable } = tableService;
 
 dotenv.config();
 
@@ -64,22 +62,26 @@ app.delete("/users/:id", (req, res) => {
   deleteUser(id).then((result) => res.send());
 });
 
-app.get("/tables", (req, res) => {
-  // Optional query search
-
-  getTables()
+app.get("/users/:id/table", (req, res) => {
+  const id = req.params["id"];
+  findTableByUserId(id)
     .then((result) => {
-      res.send({ tables_list: result });
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(404).send(`Not Found: ${id}`);
+      }
     })
     .catch((error) => {
       res.status(500).send(error.name);
     });
 });
 
-app.delete("/tables/:id", (req, res) => {
+app.get("/users/:id/table/days", (req, res) => {
   const id = req.params["id"];
-  deleteTable(id).then((result) => res.send());
+
 });
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

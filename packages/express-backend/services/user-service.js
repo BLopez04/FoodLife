@@ -1,27 +1,16 @@
 import mongoose from "mongoose";
 import userModel from "../models/user.js";
 import tableModel from "../models/table.js";
-import tableService from "./table-service.js";
-const { getTables, findTableById, deleteTable } = tableService;
+import dayModel from "../models/day.js";
+import itemModel from "../models/item.js";
 
 function getUsers() {
-  let promise = userModel.find();
-
-  return promise;
+  return userModel.find();
 }
 
 function addUser(user) {
   let userToAdd = new userModel(user);
-  const tableForUser = new tableModel({
-    personalBudget: 0.0,
-    mealplanBudget: 0.0,
-    groceryBudget: 0.0
-  });
-
-  return tableForUser.save().then((newTable) => {
-    userToAdd.table = newTable._id;
-    return userToAdd.save();
-  });
+  return userToAdd.save();
 }
 
 function findUserById(id) {
@@ -31,11 +20,31 @@ function findUserByUsername(username) {
   return userModel.find({ username: username });
 }
 
-function deleteUser(id) {
-  return findUserById(id).then((result) => {
-    const tableId = result.table;
-    return deleteTable(tableId).then(() => userModel.findByIdAndDelete(id));
+function findTableByUserId(id) {
+  return userModel.findById(id).then((user) => user.table);
+}
+
+function addDay(id, day) {
+  let dayToAdd = new dayModel({
+    date: day,
+    personalTotal: 0.0,
+    mealplanTotal: 0.0,
+    groceryTotal: 0.0,
+    personalItems: [],
+    mealplanItems: [],
+    groceryItems: []
   });
+}
+
+function getTableDays(id) {
+  return userModel
+    .findById(id)
+    .then((user) => user.table)
+    .then((table) => table.tableDays);
+}
+
+function deleteUser(id) {
+  return userModel.findByIdAndDelete(id);
 }
 
 export default {
@@ -43,5 +52,6 @@ export default {
   addUser,
   findUserById,
   findUserByUsername,
+  findTableByUserId,
   deleteUser
 };
