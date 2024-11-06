@@ -1,0 +1,14 @@
+// src/scss/_variables.scss
+
+// Primary colors
+$primary-color: #698996;
+$primary-dark: darken($primary-color, 10%);
+$secondary-color: #ffffff;
+$secondary-dark: darken($secondary-color, 10%);
+
+// Text colors
+$text-color: #ffffff;
+$text-color-dark: darken($text-color, 10%);
+
+// Background colors
+$background-color: #698996;
