@@ -4,7 +4,7 @@ import ReactDOMClient from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import MyApp from "./MyApp";
-import "/scss/style.css";
+import "../scss/style.scss";
 
 
 const container = document.getElementById("root");
