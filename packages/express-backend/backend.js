@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
+import { registerUser, authenticateUser, loginUser } from "./auth.js";
 const { getUsers, addUser, findUserById, findUserByUsername, findTableByUserId, deleteUser } =
   userService;
 
@@ -36,10 +37,15 @@ app.get("/users", (req, res) => {
     });
 });
 
-app.post("/users", (req, res) => {
+app.post("/users", authenticateUser, (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd).then((result) => res.status(201).send(result));
+  Users.addUser(userToAdd).then((result) =>
+    res.status(201).send(result)
+  );
 });
+
+app.post("/signup", registerUser);
+app.post("/login", loginUser);
 
 app.get("/users/:id", (req, res) => {
   //Specific link
