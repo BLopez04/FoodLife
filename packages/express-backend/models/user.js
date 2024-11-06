@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     table: {
       type: Schema.Types.ObjectId,
@@ -17,5 +17,3 @@ const UserSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", UserSchema);
 export default User;
-
-

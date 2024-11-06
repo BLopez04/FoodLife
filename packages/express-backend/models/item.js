@@ -5,13 +5,13 @@ const ItemSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true,
+      trim: true
     },
     price: {
       type: Number,
       required: true,
-      trim: true,
-    },
+      trim: true
+    }
   },
   { collection: "items_list" }
 );

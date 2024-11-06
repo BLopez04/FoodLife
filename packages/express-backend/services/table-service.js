@@ -13,11 +13,11 @@ function findTableById(id) {
 }
 
 function deleteTable(id) {
-  return tableModel.findByIdAndDelete( id );
+  return tableModel.findByIdAndDelete(id);
 }
 
 export default {
   getTables,
   findTableById,
-  deleteTable,
+  deleteTable
 };
