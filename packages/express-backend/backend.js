@@ -130,6 +130,10 @@ app.post("/users/:id/table/days", (req, res) => {
     .catch((error) => res.status(500).send(error.message));
 });
 
+// post request for adding items to a specific table in a day
+
+// delete request for removing items from a specific table in a day
+
 
 // app.post("/signup", registerUser);
 // app.post("/login", loginUser);
