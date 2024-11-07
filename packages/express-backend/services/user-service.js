@@ -36,15 +36,15 @@ function findTableByUserId(id) {
   });
 } */
 
-  function addDay(userId, day) {
-    const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
-  
-    return userModel.findById(userId)
-      .then((user) => {
-        user.table.tableDays.push(dayToAdd);
-        return user.save();
-      });
-  }
+function addDay(userId, day) {
+  const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
+
+  return userModel.findById(userId)
+    .then((user) => {
+      user.table.tableDays.push(dayToAdd);
+      return user.save();
+    });
+}
 
 function getTableDays(id) {
   return userModel
