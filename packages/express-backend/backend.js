@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, addDay, findUserById, getTableDays, findTableByUserId, deleteUser } =
+const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, deleteUser } =
   userService;
 
 dotenv.config();
@@ -114,6 +114,46 @@ app.get("/users/:id/table/days/:dayId/items", (req, res) => {
     });
 });
 
+app.get("/users/:id/table/days/:dayId", (req, res) => {
+  const { id, dayId } = req.params;
+  findUserById(id)
+    .then((user) => {
+      if (!user) {
+        res.status(404).send(`Not Found: ${id}`);
+      }
+
+      const day = user.table.tableDays.id(dayId);
+      if (!day) {
+        res.status(404).send(`Not Found: ${dayId}`);
+      }
+
+      res.send(day);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
+app.get("/users/:id/table/days/:dayId/:category", (req, res) => {
+  const { id, dayId, category } = req.params;
+  findUserById(id)
+    .then((user) => {
+      if (!user) {
+        res.status(404).send(`Not Found: ${id}`);
+      }
+
+      const day = user.table.tableDays.id(dayId);
+      if (!day) {
+        res.status(404).send(`Not Found: ${dayId}`);
+      }
+
+      res.send(day[category]);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
 app.post("/users", /* authenticateUser, */ (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd)
@@ -130,7 +170,14 @@ app.post("/users/:id/table/days", (req, res) => {
     .catch((error) => res.status(500).send(error.message));
 });
 
-// post request for adding items to a specific table in a day
+app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
+  const { id, dayId, category } = req.params;
+  const itemToAdd = req.body;
+
+  addItemToDay(id, dayId, category, itemToAdd)
+  .then((result) => res.status(201).send(result))
+  .catch((error) => res.status(500).send(error.message));
+})
 
 // delete request for removing items from a specific table in a day
 

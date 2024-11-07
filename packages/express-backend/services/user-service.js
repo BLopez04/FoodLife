@@ -24,6 +24,13 @@ function findTableByUserId(id) {
   return userModel.findById(id).then((user) => user.table);
 }
 
+function getTableDays(id) {
+  return userModel
+    .findById(id)
+    .then((user) => user.table)
+    .then((table) => table.tableDays);
+}
+
 /* function addDay(id, day) {
   let dayToAdd = new dayModel({
     date: day,
@@ -46,11 +53,20 @@ function addDay(userId, day) {
     });
 }
 
-function getTableDays(id) {
-  return userModel
-    .findById(id)
-    .then((user) => user.table)
-    .then((table) => table.tableDays);
+function addItemToDay(id, dayId, category, itemData) {
+  const categories = ["personalItems", "mealplanItems", "groceryItems"];
+  if (!categories.includes(category)) {
+    throw new Error(`Invalid category: ${category}`);
+  }
+
+  const itemToAdd = new itemModel(itemData);
+
+  return userModel.findById(id)
+    .then(user => {
+      const day = user.table.tableDays.id(dayId);
+      day[category].push(itemToAdd);
+      return user.save();
+    });
 }
 
 function deleteUser(id) {
@@ -65,5 +81,6 @@ export default {
   findUserByUsername,
   findTableByUserId,
   getTableDays,
+  addItemToDay,
   deleteUser
 };
