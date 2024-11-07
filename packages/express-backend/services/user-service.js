@@ -54,11 +54,6 @@ function addDay(userId, day) {
 }
 
 function addItemToDay(id, dayId, category, itemData) {
-  const categories = ["personalItems", "mealplanItems", "groceryItems"];
-  if (!categories.includes(category)) {
-    throw new Error(`Invalid category: ${category}`);
-  }
-
   const itemToAdd = new itemModel(itemData);
 
   return userModel.findById(id)
@@ -67,6 +62,14 @@ function addItemToDay(id, dayId, category, itemData) {
       day[category].push(itemToAdd);
       return user.save();
     });
+}
+
+function updateTotal(id, dayId, category, val) {
+  return userModel.updateOne(
+    { _id: id },
+    { $set: { [`table.tableDays.$[day].${category}`]: val } },
+    { arrayFilters: [ { "day._id": dayId } ] }
+  );
 }
 
 function deleteUser(id) {
@@ -96,6 +99,7 @@ export default {
   findTableByUserId,
   getTableDays,
   addItemToDay,
+  updateTotal,
   deleteUser,
   deleteItem
 };

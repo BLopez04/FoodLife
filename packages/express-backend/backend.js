@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, deleteUser, deleteItem } =
+const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, updateTotal, deleteUser, deleteItem } =
   userService;
 
 dotenv.config();
@@ -167,11 +167,21 @@ app.post("/users/:id/table/days", (req, res) => {
 
 app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
   const { id, dayId, category } = req.params;
-  const itemToAdd = req.body;
-
-  addItemToDay(id, dayId, category, itemToAdd)
-  .then((result) => res.status(201).send(result))
-  .catch((error) => res.status(500).send(error.message));
+  if (["personalItems", "mealplanItems", "groceryItems"].includes(category)) {
+    const itemToAdd = req.body;
+    addItemToDay(id, dayId, category, itemToAdd)
+      .then((result) => res.status(201).send(result))
+      .catch((error) => res.status(500).send(error.message));
+  } 
+  else if (["personalTotal", "mealplanTotal", "groceryTotal"].includes(category)) {
+    const val = req.body[category];
+    updateTotal(id, dayId, category, val)
+      .then(() => res.status(201).send())
+      .catch((error) => res.status(500).send(error.message));
+  } 
+  else {
+    throw new Error(`Invalid category: ${category}`);
+  }
 })
 
 app.delete("/users/:id", (req, res) => {
