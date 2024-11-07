@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, findUserById, getTableDays, findTableByUserId, findDaysByUserId, deleteUser } =
+const { getUsers, addUser, findUserById, getTableDays, findTableByUserId, deleteUser } =
   userService;
 
 dotenv.config();
@@ -98,6 +98,31 @@ app.get("/users/:id/table/days", (req, res) => {
     })
 });
 
+app.get("/users/:id/table/days/:dayId/items", (req, res) => {
+  const { id, dayId } = req.params;
+  findUserById(id)
+    .then((user) => {
+      if (!user) {
+        res.status(404).send(`Not Found: ${id}`);
+      }
+
+      const day = user.table.tableDays.id(dayId);
+      if (!day) {
+        res.status(404).send(`Not Found: ${dayId}`);
+      }
+
+      const items = {
+        personalItems: day.personalItems,
+        mealplanItems: day.mealplanItems,
+        groceryItems: day.groceryItems
+      };
+
+      res.send(items);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
