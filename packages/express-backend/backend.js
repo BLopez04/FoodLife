@@ -39,9 +39,9 @@ app.get("/users", (req, res) => {
 
 app.post("/users", /* authenticateUser, */ (req, res) => {
   const userToAdd = req.body;
-  Users.addUser(userToAdd).then((result) =>
-    res.status(201).send(result)
-  );
+  addUser(userToAdd)
+    .then((result) => res.status(201).send(result))
+    .catch((error) => res.status(500).send(error.message));
 });
 
 // app.post("/signup", registerUser);
