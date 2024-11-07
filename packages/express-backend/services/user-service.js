@@ -53,5 +53,6 @@ export default {
   findUserById,
   findUserByUsername,
   findTableByUserId,
+  getTableDays,
   deleteUser
 };

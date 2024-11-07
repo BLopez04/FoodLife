@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, findUserById, findUserByUsername, findTableByUserId, deleteUser } =
+const { getUsers, addUser, findUserById, getTableDays, findTableByUserId, findDaysByUserId, deleteUser } =
   userService;
 
 dotenv.config();
@@ -85,7 +85,17 @@ app.get("/users/:id/table", (req, res) => {
 
 app.get("/users/:id/table/days", (req, res) => {
   const id = req.params["id"];
-
+  getTableDays(id)
+    .then((result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(404).send(`Not Found: ${id}`);
+      }
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    })
 });
 
 
