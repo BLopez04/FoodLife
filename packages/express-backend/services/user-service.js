@@ -24,7 +24,7 @@ function findTableByUserId(id) {
   return userModel.findById(id).then((user) => user.table);
 }
 
-function addDay(id, day) {
+/* function addDay(id, day) {
   let dayToAdd = new dayModel({
     date: day,
     personalTotal: 0.0,
@@ -34,7 +34,17 @@ function addDay(id, day) {
     mealplanItems: [],
     groceryItems: []
   });
-}
+} */
+
+  function addDay(userId, day) {
+    const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
+  
+    return userModel.findById(userId)
+      .then((user) => {
+        user.table.tableDays.push(dayToAdd);
+        return user.save();
+      });
+  }
 
 function getTableDays(id) {
   return userModel
@@ -50,6 +60,7 @@ function deleteUser(id) {
 export default {
   getUsers,
   addUser,
+  addDay,
   findUserById,
   findUserByUsername,
   findTableByUserId,

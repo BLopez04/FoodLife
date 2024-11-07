@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, findUserById, getTableDays, findTableByUserId, deleteUser } =
+const { getUsers, addUser, addDay, findUserById, getTableDays, findTableByUserId, deleteUser } =
   userService;
 
 dotenv.config();
@@ -36,16 +36,6 @@ app.get("/users", (req, res) => {
       res.status(500).send(error.name);
     });
 });
-
-app.post("/users", /* authenticateUser, */ (req, res) => {
-  const userToAdd = req.body;
-  addUser(userToAdd)
-    .then((result) => res.status(201).send(result))
-    .catch((error) => res.status(500).send(error.message));
-});
-
-// app.post("/signup", registerUser);
-// app.post("/login", loginUser);
 
 app.get("/users/:id", (req, res) => {
   //Specific link
@@ -123,6 +113,26 @@ app.get("/users/:id/table/days/:dayId/items", (req, res) => {
       res.status(500).send(error.name);
     });
 });
+
+app.post("/users", /* authenticateUser, */ (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd)
+    .then((result) => res.status(201).send(result))
+    .catch((error) => res.status(500).send(error.message));
+});
+
+app.post("/users/:id/table/days", (req, res) => {
+  const id = req.params["id"];
+  const day = req.body;
+
+  addDay(id, day)
+    .then((result) => res.status(201).send(result))
+    .catch((error) => res.status(500).send(error.message));
+});
+
+
+// app.post("/signup", registerUser);
+// app.post("/login", loginUser);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
