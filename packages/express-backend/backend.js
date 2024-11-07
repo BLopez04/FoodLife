@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 // import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, deleteUser } =
+const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, deleteUser, deleteItem } =
   userService;
 
 dotenv.config();
@@ -51,11 +51,6 @@ app.get("/users/:id", (req, res) => {
     .catch((error) => {
       res.status(500).send(error.name);
     });
-});
-
-app.delete("/users/:id", (req, res) => {
-  const id = req.params["id"];
-  deleteUser(id).then((result) => res.send());
 });
 
 app.get("/users/:id/table", (req, res) => {
@@ -179,7 +174,17 @@ app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
   .catch((error) => res.status(500).send(error.message));
 })
 
-// delete request for removing items from a specific table in a day
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"];
+  deleteUser(id).then((result) => res.send());
+});
+
+app.delete("/users/:id/table/days/:dayId/:category/:itemId", (req, res) => {
+  const { id, dayId, category, itemId } = req.params;
+  deleteItem(id, dayId, category, itemId)
+    .then(() => res.status(204).send())
+    .catch((error) => res.status(500).send(error.message))
+});
 
 
 // app.post("/signup", registerUser);

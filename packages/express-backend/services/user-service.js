@@ -73,6 +73,20 @@ function deleteUser(id) {
   return userModel.findByIdAndDelete(id);
 }
 
+function deleteItem(id, dayId, category, itemId) {
+  return userModel.findById(id)
+    .then((user) => {
+      const day = user.table.tableDays.id(dayId);
+      const idx = day[category].findIndex((item) => itemId === item._id.toString());
+      if (idx === -1) {
+        throw new Error("Resource not found")
+      }
+
+      day[category].splice(idx, 1);
+      return user.save();
+    })
+}
+
 export default {
   getUsers,
   addUser,
@@ -82,5 +96,6 @@ export default {
   findTableByUserId,
   getTableDays,
   addItemToDay,
-  deleteUser
+  deleteUser,
+  deleteItem
 };
