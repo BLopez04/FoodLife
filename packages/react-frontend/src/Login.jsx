@@ -1,19 +1,32 @@
 // src/Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSignIn = () => {
     // Replace with actual authentication logic
-    if (username === "user" && password === "password") {
-      alert("Login successful!");
-      setErrorMessage("");
-    } else {
-      setErrorMessage("Invalid username or password.");
-    }
+    fetch("Http://localhost:8000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({username: username, pwd: password})
+    })
+      .then((res) => {
+        if(res.status === 200) {
+          alert("Login successful!");
+          setErrorMessage("");
+	  navigate("/table");
+        } else {
+          setErrorMessage("Invalid username or password.");
+        }
+      })
   };
 
   return (

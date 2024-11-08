@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const creds = [];
+
 function generateAccessToken(username) {
   return new Promise((resolve, reject) => {
     jwt.sign(
@@ -65,6 +67,7 @@ export function authenticateUser(req, res, next) {
 
 export function loginUser(req, res) {
   const { username, pwd } = req.body; // from form
+
   const retrievedUser = creds.find(
     (c) => c.username === username
   );

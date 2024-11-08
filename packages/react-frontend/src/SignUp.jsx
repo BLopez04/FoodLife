@@ -1,12 +1,14 @@
 // src/SignUp.jsx
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     // Basic email validation regex
@@ -16,19 +18,32 @@ function SignUp() {
 
   const handleSignUp = () => {
     // Validate inputs
-    if (!username || !email || !password) {
-      setErrorMessage("All fields are required.");
+    if (!username || !password) {
+      setErrorMessage("Username and Password required");
       return;
-    }
-    if (!validateEmail(email)) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
+    } else {
+      fetch("Http://localhost:8000/signup", {
+	method: "POST",
+	headers: {
+	  "Content-Type": "application/json"
+	},
+	body: JSON.stringify({username: username, pwd: password})
+      })
+        .then((res) => {
+	  if(res.status === 201) {
+	    // Reset error message and proceed with sign-up logic
+	    setErrorMessage("");
+	    alert("Sign-up successful!"); // Replace with actual sign-up logic
+	    navigate("/table");
+	  } else if(res.status === 409) {
+	    setErrorMessage("Username taken");
+	  } else {
+	    setErrorMessage("Sign-up unsuccessful, try again later");
+	  }
+	})
     }
 
-    // Reset error message and proceed with sign-up logic
-    setErrorMessage("");
-    alert("Sign-up successful!"); // Replace with actual sign-up logic
-  };
+     };
 
   return (
     <div className="signup-container">
