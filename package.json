@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "../../cs-307-app/node_modules/.bin/vite packages/react-frontend",
+    "start": "npm run dev -w react-frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
