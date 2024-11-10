@@ -31,6 +31,8 @@ function SignUp() {
       })
         .then((res) => {
 	  if(res.status === 201) {
+	    res.json()
+            .then((payload) => setToken(payload.token));
 	    // Reset error message and proceed with sign-up logic
 	    setErrorMessage("");
 	    alert("Sign-up successful!"); // Replace with actual sign-up logic

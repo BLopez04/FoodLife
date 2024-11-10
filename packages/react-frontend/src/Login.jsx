@@ -7,6 +7,11 @@ function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Auth state vars
+  const INVALID_TOKEN = "INVALID_TOKEN";
+  const [token, setToken] = useState(INVALID_TOKEN);
+  const [message, setMessage] = useState("");
+
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -20,6 +25,8 @@ function Login() {
     })
       .then((res) => {
         if(res.status === 200) {
+	  res.json()
+	  .then((payload) => setToken(payload.token));
           alert("Login successful!");
           setErrorMessage("");
 	  navigate("/table");
