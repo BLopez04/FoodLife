@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import userService from "./services/user-service.js";
+const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, updateTotal, deleteUser, deleteItem } = userService;
 
 const creds = [];
 
@@ -37,6 +39,7 @@ export function registerUser(req, res) {
          generateAccessToken(username).then((token) => {
            console.log("Token:", token);
            res.status(201).send({ token: token });
+	   userService.addUser({ username: username, password: hashedPassword });
            creds.push({ username, hashedPassword });
          });
        });
