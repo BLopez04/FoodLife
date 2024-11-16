@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 import { registerUser, authenticateUser, loginUser } from "./auth.js";
+
 const {
   getUsers,
   addUser,
@@ -209,6 +210,7 @@ app.delete("/users/:id/table/days/:dayId/:category/:itemId", (req, res) => {
     .then(() => res.status(204).send())
     .catch((error) => res.status(500).send(error.message));
 });
+
 
 app.post("/signup", registerUser);
 app.post("/login", loginUser);
