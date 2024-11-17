@@ -11,3 +11,6 @@ Code should work as expected afterwards. Tested with copying my backend/frontend
 
 ## Access Control Sequence Diagram
 ![access control sequence diagram](access-control.png)
+
+## Class Diagram
+![class diagram](class-diagram.png)
