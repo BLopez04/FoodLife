@@ -94,7 +94,7 @@ function TableHeader() {
         <th>Date</th>
         <th>Personal Total</th>
         <th>Meal Plan Total</th>
-        <th>Grocery</th>
+        <th>Grocery Total</th>
         <th>Personal Items</th>
         <th>Meal Plan Items</th>
         <th>Grocery Items</th>
