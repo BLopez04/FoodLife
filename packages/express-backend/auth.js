@@ -25,22 +25,25 @@ function generateAccessToken(username) {
 
 export function registerUser(req, res) {
    const { username, pwd } = req.body; // from form
-
-   if (!username || !pwd) {
-     res.status(400).send("Bad request: Invalid input data.");
-   } else if (userService.findUserByUsername(username).then((user) => user !== undefined)) {
-     res.status(409).send("Username already taken");
-   } else {
-     bcrypt
-       .genSalt(10)
-       .then((salt) => bcrypt.hash(pwd, salt))
-       .then((hashedPassword) => {
-         generateAccessToken(username).then((token) => {
-           res.status(201).send({ token: token });
-	   userService.addUser({ username: username, password: hashedPassword });
-         });
-       });
-   }
+   userService.findUserByUsername(username).then((user) => {
+     const taken = user.length !== 0; 
+     if (!username || !pwd) {
+       res.status(400).send("Bad request: Invalid input data.");
+     } else if (taken) {
+       res.status(409).send("Username already taken");
+     } else {
+       bcrypt
+	 .genSalt(10)
+	 .then((salt) => bcrypt.hash(pwd, salt))
+	 .then((hashedPassword) => {
+	   generateAccessToken(username).then((token) => {
+	     res.status(201).send({ token: token });
+	     userService.addUser({ username: username, password: hashedPassword });
+	   });
+	 });
+   }}).catch(() => {
+     res.status(400).send("Unauthorized");
+   });
  }
 
  export function authenticateUser(req, res, next) {
