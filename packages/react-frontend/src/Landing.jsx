@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import classes from './Landing.module.css';
 
-
 // Images TODO need some images
 import food1 from './images/Foo.jpg';
 import food2 from './images/FoodIconTwo.jpg';
@@ -36,6 +35,12 @@ function Landing(){
 
             <div className={classes.item2}>
                 <div className={classes.circle}></div> 
+            <h1 className={classes.text}> Foodlife </h1>
+            <p className={classes.text}>An innovative new app that tracks dining plans and monthly budgets for money-conscious adults and college students.</p>
+
+            <div>
+                <button className={classes.lbutton} onClick={() => navigate("/login")}>Login</button>
+                <button className={classes.sbutton} onClick={() => navigate("/signup")}>Sign Up </button>
             </div>
 
             <div className={classes.item3}>

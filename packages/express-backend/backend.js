@@ -4,9 +4,19 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
-// import { registerUser, authenticateUser, loginUser } from "./auth.js";
-const { getUsers, addUser, addDay, addItemToDay, findUserById, getTableDays, findTableByUserId, updateTotal, deleteUser, deleteItem } =
-  userService;
+import { registerUser, authenticateUser, loginUser } from "./auth.js";
+const {
+  getUsers,
+  addUser,
+  addDay,
+  addItemToDay,
+  findUserById,
+  getTableDays,
+  findTableByUserId,
+  updateTotal,
+  deleteUser,
+  deleteItem
+} = userService;
 
 dotenv.config();
 
@@ -80,7 +90,7 @@ app.get("/users/:id/table/days", (req, res) => {
     })
     .catch((error) => {
       res.status(500).send(error.name);
-    })
+    });
 });
 
 app.get("/users/:id/table/days/:dayId/items", (req, res) => {
@@ -149,12 +159,16 @@ app.get("/users/:id/table/days/:dayId/:category", (req, res) => {
     });
 });
 
-app.post("/users", /* authenticateUser, */ (req, res) => {
-  const userToAdd = req.body;
-  addUser(userToAdd)
-    .then((result) => res.status(201).send(result))
-    .catch((error) => res.status(500).send(error.message));
-});
+app.post(
+  "/users",
+  /* authenticateUser, */
+  (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd)
+      .then((result) => res.status(201).send(result))
+      .catch((error) => res.status(500).send(error.message));
+  }
+);
 
 app.post("/users/:id/table/days", (req, res) => {
   const id = req.params["id"];
@@ -172,17 +186,17 @@ app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
     addItemToDay(id, dayId, category, itemToAdd)
       .then((result) => res.status(201).send(result))
       .catch((error) => res.status(500).send(error.message));
-  } 
-  else if (["personalTotal", "mealplanTotal", "groceryTotal"].includes(category)) {
+  } else if (
+    ["personalTotal", "mealplanTotal", "groceryTotal"].includes(category)
+  ) {
     const val = req.body[category];
     updateTotal(id, dayId, category, val)
       .then(() => res.status(201).send())
       .catch((error) => res.status(500).send(error.message));
-  } 
-  else {
+  } else {
     throw new Error(`Invalid category: ${category}`);
   }
-})
+});
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
@@ -193,12 +207,11 @@ app.delete("/users/:id/table/days/:dayId/:category/:itemId", (req, res) => {
   const { id, dayId, category, itemId } = req.params;
   deleteItem(id, dayId, category, itemId)
     .then(() => res.status(204).send())
-    .catch((error) => res.status(500).send(error.message))
+    .catch((error) => res.status(500).send(error.message));
 });
 
-
-// app.post("/signup", registerUser);
-// app.post("/login", loginUser);
+app.post("/signup", registerUser);
+app.post("/login", loginUser);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
