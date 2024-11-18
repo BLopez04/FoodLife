@@ -8,6 +8,9 @@ function SignUp() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const INVALID_TOKEN = "INVALID_TOKEN";
+  const [token, setToken] = useState(INVALID_TOKEN);
+
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
