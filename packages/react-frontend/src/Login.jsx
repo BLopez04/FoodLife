@@ -1,6 +1,7 @@
 // src/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -16,6 +17,7 @@ function Login() {
 
   const handleSignIn = () => {
     // Replace with actual authentication logic
+    terminal.log(username);
     fetch("Http://localhost:8000/login", {
       method: "POST",
       headers: {
@@ -34,6 +36,7 @@ function Login() {
           setErrorMessage("Invalid username or password.");
         }
       })
+
   };
 
   return (

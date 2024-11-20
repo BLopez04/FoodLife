@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
 import "../scss/_table.scss";
 
 function Form(props) {
@@ -167,6 +168,8 @@ function Table() {
             row.type === "grocery" ? [{ item: row.item, price: row.price }] : []
         }
       ]);
+
+      // const postday = fetch("/users/:id/table/days")
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
@@ -183,6 +186,10 @@ function Table() {
     }
   };
 
+
+  function postDay(user) {
+    terminal.log(user);
+  }
   return (
     <div className="page-container">
       <div className="form">

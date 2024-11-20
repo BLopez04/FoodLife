@@ -31,18 +31,6 @@ function getTableDays(id) {
     .then((table) => table.tableDays);
 }
 
-/* function addDay(id, day) {
-  let dayToAdd = new dayModel({
-    date: day,
-    personalTotal: 0.0,
-    mealplanTotal: 0.0,
-    groceryTotal: 0.0,
-    personalItems: [],
-    mealplanItems: [],
-    groceryItems: []
-  });
-} */
-
 function addDay(userId, day) {
   const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
 
