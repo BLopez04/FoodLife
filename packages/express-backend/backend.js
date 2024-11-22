@@ -207,19 +207,19 @@ app.post("/users", authenticateUser, (req, res) => {
 );
 
 app.post("/users/table/days", authenticateUser, (req, res) => {
-  const id = getId(req)
+  getId(req)
     .then((id) => {
       if (id) {
-        return ({ _id: id })
+        console.log("posting to day of id", id);
+
+        const day = req.body
+        return addDay(id, day)
+          .then((result) => res.status(201).send(result))
+
       }
     })
-  console.log(id);
-  const day = req.body;
-
-  addDay(id, day)
-    .then((result) => res.status(201).send(result))
     .catch((error) => res.status(500).send(error.message));
-});
+})
 
 app.post("/users/table/days/:dayId/:category", authenticateUser, (req, res) => {
   const id = getId(req)

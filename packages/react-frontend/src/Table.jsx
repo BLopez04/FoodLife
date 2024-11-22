@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
+import { terminal } from 'virtual:terminal'
+
 import "../scss/_table.scss";
 
 function Form(props) {
@@ -198,7 +200,14 @@ function Table() {
         }
       ]);
 
-      // const postday = fetch("/users/:id/table/days")
+      terminal.log(row.date);
+
+      addDay({ date: row.date }).then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        });;
+
+
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
@@ -236,6 +245,18 @@ function Table() {
     });
     return promise;
 
+  }
+
+  function addDay(body) {
+    const promise = fetch("Http://localhost:8000/users/table/days", {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(body)
+    });
+
+    return promise
   }
 
   return (
