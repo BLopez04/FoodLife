@@ -29,29 +29,34 @@ function SignUp() {
       return;
     } else {
       fetch("Http://localhost:8000/signup", {
-	method: "POST",
-	headers: {
-	  "Content-Type": "application/json"
-	},
-	body: JSON.stringify({username: username, pwd: password})
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({username: username, pwd: password})
       })
         .then((res) => {
-	  if(res.status === 201) {
-	    res.json()
-            .then((payload) => setToken(payload.token));
-	    // Reset error message and proceed with sign-up logic
-	    setErrorMessage("");
-	    alert("Sign-up successful!"); // Replace with actual sign-up logic
-	    navigate("/table");
-	  } else if(res.status === 409) {
-	    setErrorMessage("Username taken");
-	  } else {
-	    setErrorMessage("Sign-up unsuccessful, try again later");
-	  }
-	})
+          if (res.status === 201) {
+            return res.json()
+          } else if (res.status === 409) {
+            setErrorMessage("Username taken");
+          } else {
+            setErrorMessage("Sign-up unsuccessful, try again later");
+          }
+        })
+        .then((payload) => {
+          if (payload && payload.token) {
+            setToken(payload.token);
+            alert("Sign-up successful!");
+            setErrorMessage("");
+            navigate("/table");
+          }
+        })
+        .catch((error) => {
+          setErrorMessage(error.message);
+        })
     }
-
-     };
+  };
 
   return (
     <div className="signup-container">

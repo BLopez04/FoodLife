@@ -167,6 +167,8 @@ function Table() {
 
   function logOut() {
       setToken("INVALID_TOKEN");
+      setUsername("");
+      setId("");
       navigate("/login");
   }
 

@@ -22,17 +22,21 @@ function Login() {
       body: JSON.stringify({username: username, pwd: password})
     })
       .then((res) => {
-        if(res.status === 200) {
-          res.json()
-          .then((payload) => setToken(payload.token));
-          alert("Login successful!");
-          setErrorMessage("");
-	        navigate("/table");
+        if (res.status === 200) {
+          return res.json()
         } else {
           setErrorMessage("Invalid username or password.");
         }
       })
-
+      .then((payload) => {
+        setToken(payload.token);
+        alert("Login successful!");
+        setErrorMessage("");
+        navigate("/table");
+        })
+      .catch((error) => {
+        setErrorMessage(error.message);
+      })
   };
 
   return (
