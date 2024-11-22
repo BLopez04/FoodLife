@@ -1,5 +1,18 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
+
+export const setToken = (token) => {
+  localStorage.setItem("authToken", token);
+}
+
+export const getToken = () => {
+  return localStorage.getItem("authToken");
+}
+
 export function addAuthHeader(otherHeaders = {}) {
-  if (token === INVALID_TOKEN) {
+  const token = getToken();
+  if (!token) {
     return otherHeaders;
   } else {
     return {
@@ -8,4 +21,3 @@ export function addAuthHeader(otherHeaders = {}) {
     };
   }
 }
-

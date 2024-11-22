@@ -1,15 +1,18 @@
 // src/SignUp.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
+import { setToken } from "./Auth.js";
+
+// Move the INVALID TOKEN, TOKEN etc into the Auth.js file
+// Use localStorage to have the token persists between pages (and access it)
+// Use the create auth header
 
 function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
-  const INVALID_TOKEN = "INVALID_TOKEN";
-  const [token, setToken] = useState(INVALID_TOKEN);
 
   const navigate = useNavigate();
 
