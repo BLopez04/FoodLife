@@ -42,7 +42,6 @@ app.get("/users", authenticateUser, (req, res) => {
   getUsername(req)
     .then((username) => {
       if (username) {
-        console.log("Username in endpoint is", username)
         res.send({ username: username })
       }
     })
@@ -55,7 +54,6 @@ app.get("/users/id", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
       if (id) {
-        console.log("Id in endpoint is", id)
         res.send({ _id: id })
       }
     })
@@ -64,8 +62,15 @@ app.get("/users/id", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/:id/table", (req, res) => {
-  const id = req.params["id"];
+app.get("/users/table", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
   findTableByUserId(id)
     .then((result) => {
       if (result) {
@@ -79,8 +84,15 @@ app.get("/users/:id/table", (req, res) => {
     });
 });
 
-app.get("/users/:id/table/days", (req, res) => {
-  const id = req.params["id"];
+app.get("/users/table/days", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
   getTableDays(id)
     .then((result) => {
       if (result) {
@@ -94,8 +106,16 @@ app.get("/users/:id/table/days", (req, res) => {
     });
 });
 
-app.get("/users/:id/table/days/:dayId/items", (req, res) => {
-  const { id, dayId } = req.params;
+app.get("/users/table/days/:dayId/items", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
+  const dayId = req.params;
   findUserById(id)
     .then((user) => {
       if (!user) {
@@ -120,8 +140,17 @@ app.get("/users/:id/table/days/:dayId/items", (req, res) => {
     });
 });
 
-app.get("/users/:id/table/days/:dayId", (req, res) => {
-  const { id, dayId } = req.params;
+app.get("/users/table/days/:dayId", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
+  const dayId = req.params;
+
   findUserById(id)
     .then((user) => {
       if (!user) {
@@ -140,8 +169,17 @@ app.get("/users/:id/table/days/:dayId", (req, res) => {
     });
 });
 
-app.get("/users/:id/table/days/:dayId/:category", (req, res) => {
-  const { id, dayId, category } = req.params;
+app.get("/users/table/days/:dayId/:category", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
+  const { dayId, category} = req.params;
+
   findUserById(id)
     .then((user) => {
       if (!user) {
@@ -160,10 +198,7 @@ app.get("/users/:id/table/days/:dayId/:category", (req, res) => {
     });
 });
 
-app.post(
-  "/users",
-  /* authenticateUser, */
-  (req, res) => {
+app.post("/users", authenticateUser, (req, res) => {
     const userToAdd = req.body;
     addUser(userToAdd)
       .then((result) => res.status(201).send(result))
@@ -171,8 +206,14 @@ app.post(
   }
 );
 
-app.post("/users/:id/table/days", (req, res) => {
-  const id = req.params["id"];
+app.post("/users/table/days", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
   const day = req.body;
 
   addDay(id, day)
@@ -180,8 +221,17 @@ app.post("/users/:id/table/days", (req, res) => {
     .catch((error) => res.status(500).send(error.message));
 });
 
-app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
-  const { id, dayId, category } = req.params;
+app.post("/users/table/days/:dayId/:category", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
+  const { dayId, category } = req.params;
+
   if (["personalItems", "mealplanItems", "groceryItems"].includes(category)) {
     const itemToAdd = req.body;
     addItemToDay(id, dayId, category, itemToAdd)
@@ -199,13 +249,28 @@ app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
   }
 });
 
-app.delete("/users/:id", authenticateUser, (req, res) => {
-  const id = req.params["id"];
+app.delete("/users", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
   deleteUser(id).then((result) => res.send());
 });
 
-app.delete("/users/:id/table/days/:dayId/:category/:itemId", (req, res) => {
-  const { id, dayId, category, itemId } = req.params;
+app.delete("/users/table/days/:dayId/:category/:itemId", authenticateUser, (req, res) => {
+  const id = getId(req)
+    .then((id) => {
+      if (id) {
+        return ({ _id: id })
+      }
+    })
+  console.log(id);
+
+  const { dayId, category, itemId } = req.params;
   deleteItem(id, dayId, category, itemId)
     .then(() => res.status(204).send())
     .catch((error) => res.status(500).send(error.message));
