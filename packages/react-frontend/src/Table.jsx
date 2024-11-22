@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { terminal } from "virtual:terminal";
 import { addAuthHeader, setToken } from "./Auth.js";
 import "../scss/_table.scss";
 
@@ -218,27 +217,23 @@ function Table() {
 
 
   function getName() {
-    terminal.log("about to do the request")
     const promise = fetch("Http://localhost:8000/users", {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
       })
     });
-    terminal.log("did the request");
     return promise;
 
   }
 
   function getId() {
-    terminal.log("about to do the request")
     const promise = fetch("Http://localhost:8000/users/id", {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
       })
     });
-    terminal.log("did the request");
     return promise;
 
   }
