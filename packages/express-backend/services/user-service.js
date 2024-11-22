@@ -3,6 +3,32 @@ import userModel from "../models/user.js";
 import tableModel from "../models/table.js";
 import dayModel from "../models/day.js";
 import itemModel from "../models/item.js";
+import jwt from "jsonwebtoken";
+
+function getUsername(req) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+
+  return new Promise((res, err) => {
+    jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
+      if (error) {
+        return err("JWT error:", error);
+      } else {
+        console.log("in auth, username is", decoded.username);
+        res(decoded.username);
+      }
+    })
+  })
+}
+
+function getId(req) {
+  return getUsername(req)
+    .then((username) => {
+      console.log("ok the name is", username)
+      return userModel.findOne({ username: username })
+    })
+    .then((user) => user._id)
+}
 
 function getUsers() {
   return userModel.find();
@@ -30,18 +56,6 @@ function getTableDays(id) {
     .then((user) => user.table)
     .then((table) => table.tableDays);
 }
-
-/* function addDay(id, day) {
-  let dayToAdd = new dayModel({
-    date: day,
-    personalTotal: 0.0,
-    mealplanTotal: 0.0,
-    groceryTotal: 0.0,
-    personalItems: [],
-    mealplanItems: [],
-    groceryItems: []
-  });
-} */
 
 function addDay(userId, day) {
   const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
@@ -91,6 +105,8 @@ function deleteItem(id, dayId, category, itemId) {
 }
 
 export default {
+  getUsername,
+  getId,
   getUsers,
   addUser,
   addDay,

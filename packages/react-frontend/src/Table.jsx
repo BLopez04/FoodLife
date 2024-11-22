@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
+import { addAuthHeader, setToken } from "./Auth.js";
 import "../scss/_table.scss";
 
 function Form(props) {
@@ -133,12 +135,41 @@ function TableBody(props) {
 
 function Table() {
   const [rows, setRows] = useState([]);
+  const [username, setUsername] = useState("");
+  const [_id, setId] = useState("");
+
+  useEffect(() => {
+    getName()
+      .then((res) => res.json())
+      .then((json) => setUsername(json.username))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    getId()
+      .then((res) => res.json())
+      .then((json) => setId(json._id))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   function removeOneRow(index) {
     const updated = rows.filter((row, i) => {
       return i !== index;
     });
     setRows(updated);
+  }
+
+  const navigate = useNavigate();
+
+  function logOut() {
+      setToken("INVALID_TOKEN");
+      setUsername("");
+      setId("");
+      navigate("/login");
   }
 
   const updateList = (row) => {
@@ -167,6 +198,8 @@ function Table() {
             row.type === "grocery" ? [{ item: row.item, price: row.price }] : []
         }
       ]);
+
+      // const postday = fetch("/users/:id/table/days")
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
@@ -183,8 +216,39 @@ function Table() {
     }
   };
 
+
+  function getName() {
+    terminal.log("about to do the request")
+    const promise = fetch("Http://localhost:8000/users", {
+      method: "GET",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    });
+    terminal.log("did the request");
+    return promise;
+
+  }
+
+  function getId() {
+    terminal.log("about to do the request")
+    const promise = fetch("Http://localhost:8000/users/id", {
+      method: "GET",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    });
+    terminal.log("did the request");
+    return promise;
+
+  }
+
   return (
     <div className="page-container">
+      <div className="header">
+        <h1>Welcome, {username}, {_id}</h1>
+      </div>
+      <input type="button" value="LogOut" onClick={logOut} />
       <div className="form">
         <h2>Add Item</h2>
         <Form handleSubmit={updateList} />

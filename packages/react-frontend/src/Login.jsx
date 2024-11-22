@@ -1,21 +1,19 @@
 // src/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { terminal } from "virtual:terminal";
+import { setToken } from "./Auth.js";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Auth state vars
-  const INVALID_TOKEN = "INVALID_TOKEN";
-  const [token, setToken] = useState(INVALID_TOKEN);
-  const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
 
   const handleSignIn = () => {
     // Replace with actual authentication logic
+    terminal.log("on sign in, username is", username);
     fetch("Http://localhost:8000/login", {
       method: "POST",
       headers: {
@@ -24,15 +22,20 @@ function Login() {
       body: JSON.stringify({username: username, pwd: password})
     })
       .then((res) => {
-        if(res.status === 200) {
-	  res.json()
-	  .then((payload) => setToken(payload.token));
-          alert("Login successful!");
-          setErrorMessage("");
-	  navigate("/table");
+        if (res.status === 200) {
+          return res.json()
         } else {
           setErrorMessage("Invalid username or password.");
         }
+      })
+      .then((payload) => {
+        setToken(payload.token);
+        alert("Login successful!");
+        setErrorMessage("");
+        navigate("/table");
+        })
+      .catch((error) => {
+        setErrorMessage(error.message);
       })
   };
 

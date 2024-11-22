@@ -5,7 +5,10 @@ import mongoose from "mongoose";
 
 import userService from "./services/user-service.js";
 import { registerUser, authenticateUser, loginUser } from "./auth.js";
+
 const {
+  getUsername,
+  getId,
   getUsers,
   addUser,
   addDay,
@@ -35,27 +38,25 @@ app.get("/", (req, res) => {
   res.send("FoodLife");
 });
 
-app.get("/users", (req, res) => {
-  // Optional query search
-
-  getUsers()
-    .then((result) => {
-      res.send({ users_list: result });
+app.get("/users", authenticateUser, (req, res) => {
+  getUsername(req)
+    .then((username) => {
+      if (username) {
+        console.log("Username in endpoint is", username)
+        res.send({ username: username })
+      }
     })
     .catch((error) => {
       res.status(500).send(error.name);
     });
 });
 
-app.get("/users/:id", (req, res) => {
-  //Specific link
-  const id = req.params["id"];
-  findUserById(id)
-    .then((result) => {
-      if (result) {
-        res.send(result);
-      } else {
-        res.status(404).send(`Not Found: ${id}`);
+app.get("/users/id", authenticateUser, (req, res) => {
+  getId(req)
+    .then((id) => {
+      if (id) {
+        console.log("Id in endpoint is", id)
+        res.send({ _id: id })
       }
     })
     .catch((error) => {
@@ -198,7 +199,7 @@ app.post("/users/:id/table/days/:dayId/:category", (req, res) => {
   }
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", authenticateUser, (req, res) => {
   const id = req.params["id"];
   deleteUser(id).then((result) => res.send());
 });
@@ -209,6 +210,7 @@ app.delete("/users/:id/table/days/:dayId/:category/:itemId", (req, res) => {
     .then(() => res.status(204).send())
     .catch((error) => res.status(500).send(error.message));
 });
+
 
 app.post("/signup", registerUser);
 app.post("/login", loginUser);
