@@ -1,7 +1,6 @@
 // src/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { terminal } from "virtual:terminal";
 import { setToken } from "./Auth.js";
 
 function Login() {
@@ -13,7 +12,6 @@ function Login() {
 
   const handleSignIn = () => {
     // Replace with actual authentication logic
-    terminal.log("on sign in, username is", username);
     fetch("Http://localhost:8000/login", {
       method: "POST",
       headers: {

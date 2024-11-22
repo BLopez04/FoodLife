@@ -22,7 +22,7 @@ function Landing(){
                     <p className={classes.item1Text}>
                         a fresh, easy-to-use app built to help adults and college students keep track 
                         of their dining plans and stick to their food budgets without the stress. 
-                        Whether you're a college student juggling meal swipes or someone just trying 
+                        Whether you&#39;re a college student juggling meal swipes or someone just trying 
                         to save a little extra cash each month, Foodlife makes it simple to stay on 
                         top of your food spending
                     </p> 
