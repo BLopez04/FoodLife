@@ -63,55 +63,98 @@ app.get("/users/id", authenticateUser, (req, res) => {
     });
 });
 
+// app.get("/users/table", authenticateUser, (req, res) => {
+//   getId(req)
+//     .then((id) => {
+//       if (id) {
+//         res.send({ _id: id })
+//       }
+//       findTableByUserId(id)
+//         .then((result) => {
+//           if (result) {
+//             res.send(result);
+//           } else {
+//             res.status(404).send(`Not Found: ${id}`);
+//           }
+//         })
+//         .catch((error) => {
+//           res.status(500).send(error.name);
+//         });
+//     })
+//     .catch((error) => {
+//       res.status(500).send(error.name);
+//     });
+
+// });
+
 app.get("/users/table", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
-      if (id) {
-        res.send({ _id: id })
+      if (!id) {
+        return res.status(404).send("User ID not found.");
       }
-      findTableByUserId(id)
-        .then((result) => {
-          if (result) {
-            res.send(result);
-          } else {
-            res.status(404).send(`Not Found: ${id}`);
-          }
-        })
-        .catch((error) => {
-          res.status(500).send(error.name);
-        });
+
+      return findTableByUserId(id).then((result) => {
+        if (!result) {
+          return res.status(404).send(`Table not found for user ID: ${id}`);
+        }
+
+        return res.send(result);
+      });
     })
     .catch((error) => {
-      res.status(500).send(error.name);
+      console.error(error);
+      res.status(500).send(error.name || "Internal Server Error");
     });
-
 });
+
+
+// app.get("/users/table/days", authenticateUser, (req, res) => {
+
+//   getId(req)
+//     .then((id) => {
+//       if (id) {
+//         res.send({ _id: id })
+//       }
+//       getTableDays(id)
+//         .then((result) => {
+//           if (result) {
+//             res.send(result);
+//           } else {
+//             res.status(404).send(`Not Found: ${id}`);
+//           }
+//         })
+//         .catch((error) => {
+//           res.status(500).send(error.name);
+//         });
+//     })
+//     .catch((error) => {
+//       res.status(500).send(error.name);
+//     });
+// });
 
 app.get("/users/table/days", authenticateUser, (req, res) => {
-
   getId(req)
     .then((id) => {
-      if (id) {
-        res.send({ _id: id })
+      if (!id) {
+        return res.status(404).send("User ID not found.");
       }
-      getTableDays(id)
+
+      return getTableDays(id)
         .then((result) => {
-          if (result) {
-            res.send(result);
-          } else {
-            res.status(404).send(`Not Found: ${id}`);
+          if (!result) {
+            return res.status(404).send(`No days found for user ID: ${id}`);
           }
-        })
-        .catch((error) => {
-          res.status(500).send(error.name);
-        });
+
+          return res.send(result);
+      });
     })
     .catch((error) => {
-      res.status(500).send(error.name);
+      console.error(error);
+      res.status(500).send(error.name || "Internal Server Error");
     });
-
-
 });
+
 
 app.get("/users/table/days/:dayName", authenticateUser, (req, res) => {
   /* For sure needs to get reformatted like the post

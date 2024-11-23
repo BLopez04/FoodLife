@@ -111,7 +111,7 @@ function TableHeader() {
 function TableBody(props) {
   const formatItems = (items) => {
     return items
-      .map((item) => `$${item.price.toFixed(2)} : ${item.item}`)
+      .map((item) => `$${item.price.toFixed(2)} : ${item.name}`)
       .join("\n");
   };
 
@@ -146,16 +146,37 @@ function Table() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
 
-  useEffect(() => {
     getId()
       .then((res) => res.json())
       .then((json) => setId(json._id))
       .catch((error) => {
         console.log(error);
-      });
+    });  
+
+    fetchTableData()
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+        return res.json();
+      })
+      .then((table_data) => {
+        const formattedRows = table_data.tableDays.map((day) => ({
+          date: new Date(day.date).toISOString().split("T")[0],
+          p_total: day.personalTotal || 0,
+          m_total: day.mealplanTotal || 0,
+          g_total: day.groceryTotal || 0,
+          p_items: day.personalItems || [],
+          m_items: day.mealplanItems || [],
+          g_items: day.groceryItems || [],
+        }));
+        setRows(formattedRows);
+      })
+      .catch((error) => console.log(error));
+
   }, []);
+  
 
   function removeOneRow(index) {
     const updated = rows.filter((row, i) => {
@@ -285,6 +306,17 @@ function Table() {
     });
 
     return promise
+  }
+
+  function fetchTableData() {
+    const promise = fetch("http://localhost:8000/users/table", {
+      method: "GET",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+    });
+      
+    return promise;
   }
 
   return (
