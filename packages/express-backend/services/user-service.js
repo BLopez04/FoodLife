@@ -56,9 +56,9 @@ function getTableDays(id) {
     .then((user) => user.table)
     .then((table) => table.tableDays);
 }
-
 function addDay(userId, day) {
   const dayToAdd = new dayModel(day); // Create a new Day instance with dayData
+  /* Gets the user by their userId, and adds a day based off the name to table*/
 
   return userModel.findById(userId)
     .then((user) => {
@@ -67,9 +67,27 @@ function addDay(userId, day) {
     });
 }
 
+function getTableDayId(id, dayName) {
+  /* With user's id and the name of the day to add, finds the user table, finds the day
+  that matches the dayName provided (with a bit of reformatting to compare), and then
+  returns the Id of the day that already exists in the table */
+  return userModel
+    .findById(id)
+    .then((user) => user.table)
+    .then((table) => {
+      const theDay = table.tableDays.find((day) => {
+          const reformatDate = new Date(day.date).toISOString().split("T")[0]
+          console.log("reformatDate is", reformatDate, "checking against", dayName);
+          return reformatDate === dayName
+        })
+      return theDay ? theDay._id : null;
+    })
+}
+
 function addItemToDay(id, dayId, category, itemData) {
   const itemToAdd = new itemModel(itemData);
-
+/* With a userId and their tableId, as well as the category (personalItem, etc), adds
+the itemData as an itemModel to the right day in the table, and the right category. */
   return userModel.findById(id)
     .then(user => {
       const day = user.table.tableDays.id(dayId);
@@ -78,13 +96,15 @@ function addItemToDay(id, dayId, category, itemData) {
     });
 }
 
-function updateTotal(id, dayId, category, val) {
+function updateTotal(id, dayId, totalCategory, val) {
+  /* Increments the total price with the userId, dayId, and category,
+  use negative val to decrement */
   return userModel.updateOne(
-    { _id: id },
-    { $set: { [`table.tableDays.$[day].${category}`]: val } },
-    { arrayFilters: [ { "day._id": dayId } ] }
+    { _id: id, "table.tableDays._id": dayId },
+    { $inc: { [`table.tableDays.$.${totalCategory}`]: val } }
   );
 }
+
 
 function deleteUser(id) {
   return userModel.findByIdAndDelete(id);
@@ -114,6 +134,7 @@ export default {
   findUserByUsername,
   findTableByUserId,
   getTableDays,
+  getTableDayId,
   addItemToDay,
   updateTotal,
   deleteUser,
