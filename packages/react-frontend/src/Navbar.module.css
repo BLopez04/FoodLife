@@ -1,3 +1,4 @@
+/* Navbar.module.css */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -19,7 +20,8 @@
   gap: 1rem;
 }
 
-.navButton {
+.navButton,
+.activeNavButton {
   appearance: none;
   background-color: transparent;
   border: none;
@@ -29,10 +31,15 @@
   font-weight: 600;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1.5;
   border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .navButton:hover {
   background-color: #a6c8ac;
+}
+
+.activeNavButton {
+  color: #6ea379;
 }
