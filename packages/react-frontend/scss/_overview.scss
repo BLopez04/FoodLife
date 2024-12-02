@@ -1,0 +1,132 @@
+.overview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #e4fae4;
+  font-family: Arial, sans-serif;
+
+  .greeting {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: black;
+    font-weight: bold;
+    span.user-name {
+      color: #2ea44f;
+      font-weight: bold;
+    }
+  }
+
+  .tabbed-budget-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      background-color: #f8f9fa;
+      border-radius: 8px 8px 0 0;
+
+      .tab-button {
+        flex: 1;
+        padding: 10px;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        background-color: #ddd;
+        transition: background-color 0.3s;
+
+        &.active {
+          background-color: #2ea44f;
+          color: white;
+        }
+
+        &:hover:not(.active) {
+          background-color: #bbb;
+        }
+
+        &:first-child {
+          border-radius: 8px 0 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 8px 0 0;
+        }
+      }
+    }
+
+    .budget-card {
+      width: 100%;
+      background: white;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+
+      .card-title {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #000000;
+      }
+
+      .budget-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 5px;
+      
+        .budget-section {
+          text-align: center;
+      
+          h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            color: #2ea44f;
+          }
+      
+          .values {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+      
+            .value-box {
+              flex: 1;
+              max-width: 130px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              background: #f4f4f9;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 8px;
+              width: 100px;
+              text-align: center;
+      
+              p {
+                margin: 0;
+                font-size: 0.9rem;
+                color: #555;
+              }
+      
+              span {
+                margin-top: 8px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #333;
+              }
+            }
+          }
+        }
+      }      
+    }
+  }
+}
+

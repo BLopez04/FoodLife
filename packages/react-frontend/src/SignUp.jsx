@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { terminal } from "virtual:terminal";
 import { setToken } from "./Auth.js";
+import "../scss/_signup.scss";
 
 // Move the INVALID TOKEN, TOKEN etc into the Auth.js file
 // Use localStorage to have the token persists between pages (and access it)
