@@ -315,14 +315,19 @@ app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) =>
             return addItemToDay(id, dayId, cat, itemToAdd)
               .then(() =>
                 updateTotal(id, dayId, tot, itemToAdd.price))
-              .then((res) => {
+              .then((result) => {
                 res.status(201).send(result)
-              })
-              .catch((error) => res.status(500).send(error.message))
-          }
-        )
+              });
+          })
+        .catch((error) => {
+          console.error("Error in category add block", error);
+          res.status(500).send(error.message)
+        });
     })
-    .catch((error) => res.status(500).send(error.message));
+    .catch((error) => {
+      console.error("Error in getId call", error);
+      res.status(500).send(error.message);
+    });
 });
 
 app.delete("/users", authenticateUser, (req, res) => {

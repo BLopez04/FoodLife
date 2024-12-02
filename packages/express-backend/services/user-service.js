@@ -28,6 +28,10 @@ function getId(req) {
       return userModel.findOne({ username: username })
     })
     .then((user) => user._id)
+    .catch((error) => {
+      console.log("Error in getId");
+      throw error;
+    })
 }
 
 function getUsers() {
@@ -71,10 +75,12 @@ function getTableDayId(id, dayName) {
   /* With user's id and the name of the day to add, finds the user table, finds the day
   that matches the dayName provided (with a bit of reformatting to compare), and then
   returns the Id of the day that already exists in the table */
-  return userModel
-    .findById(id)
-    .then((user) => user.table)
-    .then((table) => {
+  return userModel.findById(id)
+    .then((user) => {
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const table = user.table;
       const theDay = table.tableDays.find((day) => {
           const reformatDate = new Date(day.date).toISOString().split("T")[0]
           console.log("reformatDate is", reformatDate, "checking against", dayName);
@@ -82,6 +88,10 @@ function getTableDayId(id, dayName) {
         })
       return theDay ? theDay._id : null;
     })
+    .catch((error) => {
+      console.log("Error in getTableDayId");
+      throw error;
+    });
 }
 
 function addItemToDay(id, dayId, category, itemData) {
@@ -90,19 +100,31 @@ function addItemToDay(id, dayId, category, itemData) {
 the itemData as an itemModel to the right day in the table, and the right category. */
   return userModel.findById(id)
     .then(user => {
+      if (!user) {
+        throw new Error("User not found");
+      }
       const day = user.table.tableDays.id(dayId);
+      if (!day) {
+        throw new Error("Day not found");
+      }
       day[category].push(itemToAdd);
       return user.save();
-    });
-}
+    })
+    .catch((error) => {
+      console.log("Error in addItemToDay");
+      throw error;
+})}
 
 function updateTotal(id, dayId, totalCategory, val) {
   /* Increments the total price with the userId, dayId, and category,
   use negative val to decrement */
   return userModel.updateOne(
     { _id: id, "table.tableDays._id": dayId },
-    { $inc: { [`table.tableDays.$.${totalCategory}`]: val } }
-  );
+    { $inc: { [`table.tableDays.$.${totalCategory}`]: val } })
+    .catch((error) => {
+      console.log("Error in getId");
+      throw error;
+    })
 }
 
 
