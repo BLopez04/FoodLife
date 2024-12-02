@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   background-color: #c0e4c6;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -34,6 +34,5 @@
 }
 
 .navButton:hover {
-  background-color: #276221;
-  color: #ffffff;
+  background-color: #a6c8ac;
 }
