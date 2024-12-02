@@ -29,7 +29,8 @@ function Landing(){
 
                     <div className={classes.buttonGroup}>  
                         <button className={classes.loginButton} onClick={() => navigate("/login")}> Login </button>
-                        <button className={classes.signButton} onClick={() => navigate("/signup")}> Sign Up </button>  
+                        <button className={classes.signButton} onClick={() => navigate("/signup")}> Sign Up </button>
+                        <button className={classes.aboutButton} onClick={() => navigate("/about")}> About </button>    
                     </div>
                 </div> 
             </div>
