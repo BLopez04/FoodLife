@@ -26,15 +26,6 @@ body
     grid-row: 1;
 }
 
-.item3
-{
-    grid-column-start: 1;
-    grid-column-end: 2;
-    grid-row: 2;
-
-    display: grid;
-}
-
 .item1Title
 {
     color: white;

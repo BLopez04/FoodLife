@@ -30,23 +30,6 @@ function Landing(){
                         </div>
                     </div> 
                 </div>
-
-                <div className={classes.item3}>
-                    <div> 
-                        <h3>Food1</h3>
-                        <p>Food, Food, Food!!!</p>
-                    </div>
-
-                    <div>
-                        <h3>Food2</h3>
-                        <p>More Food</p>
-                    </div>v
-
-                    <div>
-                        <h3>Food3</h3>
-                        <p>Productivity down the drain</p>
-                    </div>
-                </div>
             </div>
         </div>
     );
