@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
 
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,7 @@ function Login() {
 
   const handleSignIn = () => {
     // Replace with actual authentication logic
-    fetch("Http://localhost:8000/login", {
+    fetch(`${API_PREFIX}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

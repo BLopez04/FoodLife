@@ -8,6 +8,8 @@ import { setToken } from "./Auth.js";
 // Use localStorage to have the token persists between pages (and access it)
 // Use the create auth header
 
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+
 function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -28,7 +30,7 @@ function SignUp() {
       setErrorMessage("Username and Password required");
       return;
     } else {
-      fetch("Http://localhost:8000/signup", {
+      fetch(`${API_PREFIX}/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

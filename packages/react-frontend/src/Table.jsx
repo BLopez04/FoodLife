@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
 import { terminal } from 'virtual:terminal'
-
 import "../scss/_table.scss";
+
+const API_PREFIX = import.meta.env.VITE_API_PREFIX;
 
 function Form(props) {
   const [data, setData] = useState({
@@ -263,7 +264,7 @@ function Table() {
 
 
   function getName() {
-    const promise = fetch("Http://localhost:8000/users", {
+    const promise = fetch(`${API_PREFIX}/users`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -274,7 +275,7 @@ function Table() {
   }
 
   function getId() {
-    const promise = fetch("Http://localhost:8000/users/id", {
+    const promise = fetch(`${API_PREFIX}/users/id`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -285,7 +286,7 @@ function Table() {
   }
 
   function addDay(body) {
-    const promise = fetch("Http://localhost:8000/users/table/days", {
+    const promise = fetch(`${API_PREFIX}/users/table/days`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -297,7 +298,7 @@ function Table() {
   }
 
   function addItem(dayName, category, body) {
-    const promise = fetch(`Http://localhost:8000/users/table/days/${dayName}/${category}`, {
+    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -309,7 +310,7 @@ function Table() {
   }
 
   function fetchTableData() {
-    const promise = fetch("http://localhost:8000/users/table", {
+    const promise = fetch(`${API_PREFIX}/users/table`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json",
