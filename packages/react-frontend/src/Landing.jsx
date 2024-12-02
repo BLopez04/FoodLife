@@ -13,22 +13,18 @@ import food4 from './images/HealthyFoodIcon.png';
 import Navbar from "./Navbar";
 
 
-function Landing(){
+function Landing() {
     const navigate = useNavigate();
     return (
         <div>
             <Navbar />
             <div className={classes.container}>
                 <div className={classes.item1}>
-                    <div className={classes.module}>
-                        <h1 className={classes.item1Title}> Foodlife </h1>
-
-                        <div className={classes.buttonGroup}>  
-                            <button className={classes.loginButton} onClick={() => navigate("/login")}> Login </button>
-                            <button className={classes.signButton} onClick={() => navigate("/signup")}> Sign Up </button>
-                            <button className={classes.aboutButton} onClick={() => navigate("/about")}> About </button>    
-                        </div>
-                    </div> 
+                    <h1 className={classes.item1Title}>Foodlife</h1>
+                    <div className={classes.buttonSignLog}>
+                        <button className={classes.loginButton} onClick={() => navigate("/login")}>Login</button>
+                        <button className={classes.signButton} onClick={() => navigate("/signup")}>Sign Up</button>
+                    </div>
                 </div>
             </div>
         </div>

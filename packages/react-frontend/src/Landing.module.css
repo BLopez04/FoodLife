@@ -3,15 +3,15 @@ body
   background-color: #E4FAE4;
 }
 
-.container
-{
-    width: 100vw;
-    height: 100vh;
-
-    display: grid;
-
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: auto auto;
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #E4FAE4;
+  padding-top: 100px;
 }
 
 .text
@@ -19,29 +19,18 @@ body
     color: White
 }
 
-/* Top Left */
-.item1
-{
-    grid-column: 1;
-    grid-row: 1;
-}
-
-.item1Title
-{
-    color: white;
-
-    font-size: 250%;
-    padding-top: 6%;
-    padding-left: 10%;
-    padding-right: 30%;
-
-    font-weight: bold;
-    text-shadow:
+.item1Title {
+  color: white;
+  font-size: 250%;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow:
     -1px -1px 0px black,
     1px -1px 0px black,
     -1px 1px 0px black,
     1px 1px 0px black,
     0 0 20px white;
+  text-align: center;
 }
 
 .item1Text
@@ -63,18 +52,11 @@ body
     0 0 20px white;
 }
 
-.buttonGroup
-{ 
-    /* Align item to bottom center */
-    padding-left: 15%;
-    display: flex;
-    justify-self: flex-start;
-    align-items: flex-end;
-}
-
-.module
-{
-  color: red;
+.buttonSignLog {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .signButton
@@ -191,70 +173,3 @@ body
   background-color: #298e46;
   box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 }
-
-.aboutButton
-{
-  appearance: none;
-  background-color: #2ea44f;
-  border: 1px solid rgba(27, 31, 35, .15);
-  border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  padding: 6px 16px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
-.aboutButton:focus:not(:focus-visible):not(.focus-visible) {
-  box-shadow: none;
-  outline: none;
-}
-
-.aboutButton:hover 
-{
-  background-color: #2c974b;
-}
-
-.aboutButton:focus 
-{
-  box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
-  outline: none;
-}
-
-.aboutButton:disabled
-{
-  background-color: #94d3a2;
-  border-color: rgba(27, 31, 35, .1);
-  color: rgba(255, 255, 255, .8);
-  cursor: default;
-}
-.aboutButton:active
-{
-  background-color: #298e46;
-  box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
-}
-
-
-
-.circle
-{
-    width: 500px;
-    height: 500px;
-    background-color: #276221;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-}
-
