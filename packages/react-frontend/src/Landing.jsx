@@ -31,10 +31,6 @@ function Landing(){
                     </div> 
                 </div>
 
-                <div className={classes.item2}>
-                    <div className={classes.circle}></div> 
-                </div>
-
                 <div className={classes.item3}>
                     <div> 
                         <h3>Food1</h3>

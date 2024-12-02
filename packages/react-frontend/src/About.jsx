@@ -1,13 +1,15 @@
 // src/About.jsx
 import { useNavigate } from "react-router-dom";
-import trackImg from "./images/Track.jpg"
-import mealImg from "./images/MealKebab.jpg"
+import Navbar from "./Navbar";
+import trackImg from "./images/Track.jpg";
+import mealImg from "./images/MealKebab.jpg";
 
 function About() {
   const navigate = useNavigate();
 
   return (
     <>
+      <Navbar />
       <div className="about-container">
         <h2>About FoodLife</h2>
         <p>
@@ -17,8 +19,6 @@ function About() {
           to save a little extra cash each month, Foodlife makes it simple to stay on 
           top of your food spending.
         </p>
-
-        <button className="back-button" onClick={() => navigate("/")}> ← Back </button>
       </div>
       
       <div className="img-container">
