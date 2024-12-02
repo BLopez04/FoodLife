@@ -10,7 +10,7 @@ function Form(props) {
   const [data, setData] = useState({
     date: "",
     price: "",
-    item: "",
+    name: "",
     type: "personal"
   });
 
@@ -26,14 +26,14 @@ function Form(props) {
     const formattedData = {
       date: data.date,
       price: parseFloat(data.price || 0),
-      item: data.item,
+      name: data.name,
       type: data.type
     };
     props.handleSubmit(formattedData);
     setData({
       date: "",
       price: "",
-      item: "",
+      name: "",
       type: "personal"
     });
   }
@@ -48,12 +48,12 @@ function Form(props) {
         value={data.date}
         onChange={handleChange}
       />
-      <label htmlFor="item">Item</label>
+      <label htmlFor="name">Item</label>
       <input
         type="text"
-        name="item"
-        id="item"
-        value={data.item}
+        name="name"
+        id="name"
+        value={data.name}
         onChange={handleChange}
       />
       <div className="form-row">
@@ -198,7 +198,7 @@ function Table() {
   const updateList = (row) => {
     const index = rows.findIndex((v) => v.date === row.date);
 
-    if (!row.date || !row.item || !row.price) {
+    if (!row.date || !row.name || !row.price) {
       alert("Please enter a valid Date, Item and Price.");
       return;
     }
@@ -213,12 +213,12 @@ function Table() {
           g_total: row.type === "grocery" ? parseFloat(row.price || 0) : 0,
           p_items:
             row.type === "personal"
-              ? [{ item: row.item, price: row.price }]
+              ? [{ name: row.name, price: row.price }]
               : [],
           m_items:
-            row.type === "meal" ? [{ item: row.item, price: row.price }] : [],
+            row.type === "meal" ? [{ name: row.name, price: row.price }] : [],
           g_items:
-            row.type === "grocery" ? [{ item: row.item, price: row.price }] : []
+            row.type === "grocery" ? [{ name: row.name, price: row.price }] : []
         }
       ]);
 
@@ -226,7 +226,7 @@ function Table() {
 
       addDay({ date: row.date }).then((res) => res.json())
         .then(() =>
-          addItem(row.date, row.type,{ name: row.item, price: row.price }))
+          addItem(row.date, row.type,{ name: row.name, price: row.price }))
         .then((res) => res.json())
         .catch((error) => {
           console.log(error);
@@ -238,19 +238,19 @@ function Table() {
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
-        rows[index].p_items.push({ item: row.item, price: row.price });
+        rows[index].p_items.push({ name: row.name, price: row.price });
       } else if (row.type === "meal") {
         rows[index].m_total += parseFloat(row.price || 0);
-        rows[index].m_items.push({ item: row.item, price: row.price });
+        rows[index].m_items.push({ name: row.name, price: row.price });
       } else if (row.type === "grocery") {
         rows[index].g_total += parseFloat(row.price || 0);
-        rows[index].g_items.push({ item: row.item, price: row.price });
+        rows[index].g_items.push({ name: row.name, price: row.price });
       }
 
       setRows([...rows]);
-      terminal.log(row.date, row.type, row.item, row.price);
+      terminal.log(row.date, row.type, row.name, row.price);
 
-      addItem(row.date, row.type,{ name: row.item, price: row.price }).then((res) => res.json())
+      addItem(row.date, row.type,{ name: row.name, price: row.price }).then((res) => res.json())
         .catch((error) => {
           console.log(error);
         });
