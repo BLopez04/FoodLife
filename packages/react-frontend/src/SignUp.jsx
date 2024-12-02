@@ -96,6 +96,8 @@ function SignUp() {
         />
       </div>
 
+      <button className="back-button" onClick={() => navigate("/")}> ← Back </button>
+
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
       <button onClick={handleSignUp} className="signup-button">
