@@ -50,7 +50,7 @@ function SignUp() {
             setToken(payload.token);
             alert("Sign-up successful!");
             setErrorMessage("");
-            navigate("/table");
+            navigate("/overview");
           }
         })
         .catch((error) => {

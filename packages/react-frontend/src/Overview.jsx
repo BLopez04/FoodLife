@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../scss/_overview.scss";
 
 function Overview() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Today");
 
   const renderBudgetDetails = (type, budget, spent, total) => (
@@ -53,6 +55,9 @@ function Overview() {
           </div>
         </div>
       </div>
+      
+      <button className="table-button" onClick={() => navigate("/table")}> View Table → </button>
+      
     </div>
   );
 }
