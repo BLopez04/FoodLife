@@ -1,7 +1,6 @@
 // src/SignUp.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { terminal } from "virtual:terminal";
 import { setToken } from "./Auth.js";
 
 // Move the INVALID TOKEN, TOKEN etc into the Auth.js file

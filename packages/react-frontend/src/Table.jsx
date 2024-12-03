@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
-import { terminal } from 'virtual:terminal'
 import "../scss/_table.scss";
 
 const API_PREFIX = import.meta.env.VITE_API_PREFIX;
@@ -231,8 +230,6 @@ function Table() {
         }
       ]);
 
-      terminal.log(row.date);
-
       addDay({ date: row.date }).then((res) => res.json())
         .then(() =>
           addItem(row.date, row.type,{ name: row.name, price: row.price }))
@@ -240,9 +237,6 @@ function Table() {
         .catch((error) => {
           console.log(error);
         });
-
-      terminal.log("Added a day")
-      terminal.log("Added an item")
 
     } else {
       if (row.type === "personal") {
@@ -257,13 +251,11 @@ function Table() {
       }
 
       setRows([...rows]);
-      terminal.log(row.date, row.type, row.name, row.price);
 
       addItem(row.date, row.type,{ name: row.name, price: row.price }).then((res) => res.json())
         .catch((error) => {
           console.log(error);
         });
-      terminal.log("Added an item")
 
     }
 

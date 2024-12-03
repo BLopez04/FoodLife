@@ -26,6 +26,7 @@ const {
 dotenv.config();
 
 const { CUSTOMCONNSTR_MONGO_CONNECTION_STRING } = process.env;
+const { ALLOWED_ORIGIN } = process.env;
 
 mongoose.set("debug", true);
 mongoose.connect(CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console.log(error));
@@ -34,7 +35,7 @@ const app = express();
 const port = 8000;
 
 const corsOptions = {
-  origin: 'http://localhost:3000, https://wonderful-sand-03e75361e.4.azurestaticapps.net',
+  origin: ALLOWED_ORIGIN,
   methods: 'GET,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   credentials: true,
@@ -42,8 +43,10 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
-app.options('*', cors(corsOptions));
+console.log(ALLOWED_ORIGIN);
+
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
