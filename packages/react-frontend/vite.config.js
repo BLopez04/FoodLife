@@ -10,7 +10,15 @@ export default defineConfig({
       output: ['terminal', 'console']
     })
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./scss/_variables.scss";`
+      }
+    }
+  },
   build: {
+    outDir: 'dist',
     rollupOptions: {
       external: ['/@id/__x00__virtual:terminal/console']
     }
