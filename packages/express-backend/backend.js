@@ -34,7 +34,7 @@ const app = express();
 const port = 8000;
 
 const corsOptions = {
-  origin: '*',
+  origin: 'http://localhost:3000, https://wonderful-sand-03e75361e.4.azurestaticapps.net',
   methods: 'GET,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   credentials: true,
