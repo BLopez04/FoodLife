@@ -30,7 +30,7 @@ function SignUp() {
       setErrorMessage("Username and Password required");
       return;
     } else {
-      fetch(`${API_PREFIX}/signup`, {
+      fetch(`${API_PREFIX}/signup/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

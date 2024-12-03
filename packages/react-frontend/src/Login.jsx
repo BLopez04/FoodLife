@@ -14,7 +14,7 @@ function Login() {
 
   const handleSignIn = () => {
     // Replace with actual authentication logic
-    fetch(`${API_PREFIX}/login`, {
+    fetch(`${API_PREFIX}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

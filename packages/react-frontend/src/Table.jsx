@@ -264,7 +264,7 @@ function Table() {
 
 
   function getName() {
-    const promise = fetch(`${API_PREFIX}/users`, {
+    const promise = fetch(`${API_PREFIX}/users/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -275,7 +275,7 @@ function Table() {
   }
 
   function getId() {
-    const promise = fetch(`${API_PREFIX}/users/id`, {
+    const promise = fetch(`${API_PREFIX}/users/id/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -286,7 +286,7 @@ function Table() {
   }
 
   function addDay(body) {
-    const promise = fetch(`${API_PREFIX}/users/table/days`, {
+    const promise = fetch(`${API_PREFIX}/users/table/days/`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -298,7 +298,7 @@ function Table() {
   }
 
   function addItem(dayName, category, body) {
-    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}`, {
+    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}/`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -310,7 +310,7 @@ function Table() {
   }
 
   function fetchTableData() {
-    const promise = fetch(`${API_PREFIX}/users/table`, {
+    const promise = fetch(`${API_PREFIX}/users/table/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json",

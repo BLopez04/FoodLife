@@ -37,9 +37,11 @@ const corsOptions = {
   methods: 'GET,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   credentials: true,
-  preflightContinue: false
-}
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
 
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 
