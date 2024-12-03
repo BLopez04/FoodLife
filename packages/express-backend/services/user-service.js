@@ -146,6 +146,30 @@ function deleteItem(id, dayId, category, itemId) {
     })
 }
 
+function deleteDay(userId, dayName) {
+  return getTableDayId(userId, dayName)
+    .then((dayId) => {
+      if (!dayId) {
+        throw new Error("Day not found");
+      }
+
+      return findUserById(userId)
+        .then((user) => {
+          const idx = user.table.tableDays.findIndex(day => {
+            const formattedDate = new Date(day.date).toISOString().split("T")[0];
+            return formattedDate === dayName
+          });
+
+          if (idx === -1) {
+            throw new Error("Day not found");
+          }
+
+          user.table.tableDays.splice(idx, 1);
+          return user.save();
+        });
+    });
+}
+
 export default {
   getUsername,
   getId,
@@ -160,5 +184,6 @@ export default {
   addItemToDay,
   updateTotal,
   deleteUser,
+  deleteDay,
   deleteItem
 };
