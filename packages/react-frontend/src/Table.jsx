@@ -175,15 +175,24 @@ function Table() {
         setRows(formattedRows);
       })
       .catch((error) => console.log(error));
-
   }, []);
   
 
   function removeOneRow(index) {
-    const updated = rows.filter((row, i) => {
-      return i !== index;
-    });
-    setRows(updated);
+    const dayToDelete = rows[index].date;
+
+    deleteDay(dayToDelete)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+
+        const updated = rows.filter((row, i) => {
+          return i !== index;
+        });
+        setRows(updated);
+      })
+      .catch((error) => console.log(error));
   }
 
   const navigate = useNavigate();
@@ -295,6 +304,15 @@ function Table() {
     });
 
     return promise
+  }
+
+  function deleteDay(dayName) {
+    return fetch(`http://localhost:8000/users/table/days/${dayName}`, {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    });
   }
 
   function addItem(dayName, category, body) {

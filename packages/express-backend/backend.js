@@ -19,6 +19,7 @@ const {
   findTableByUserId,
   updateTotal,
   deleteUser,
+  deleteDay,
   deleteItem
 } = userService;
 
@@ -73,30 +74,6 @@ app.get("/users/id", authenticateUser, (req, res) => {
     });
 });
 
-// app.get("/users/table", authenticateUser, (req, res) => {
-//   getId(req)
-//     .then((id) => {
-//       if (id) {
-//         res.send({ _id: id })
-//       }
-//       findTableByUserId(id)
-//         .then((result) => {
-//           if (result) {
-//             res.send(result);
-//           } else {
-//             res.status(404).send(`Not Found: ${id}`);
-//           }
-//         })
-//         .catch((error) => {
-//           res.status(500).send(error.name);
-//         });
-//     })
-//     .catch((error) => {
-//       res.status(500).send(error.name);
-//     });
-
-// });
-
 app.get("/users/table", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
@@ -117,31 +94,6 @@ app.get("/users/table", authenticateUser, (req, res) => {
       res.status(500).send(error.name || "Internal Server Error");
     });
 });
-
-
-// app.get("/users/table/days", authenticateUser, (req, res) => {
-
-//   getId(req)
-//     .then((id) => {
-//       if (id) {
-//         res.send({ _id: id })
-//       }
-//       getTableDays(id)
-//         .then((result) => {
-//           if (result) {
-//             res.send(result);
-//           } else {
-//             res.status(404).send(`Not Found: ${id}`);
-//           }
-//         })
-//         .catch((error) => {
-//           res.status(500).send(error.name);
-//         });
-//     })
-//     .catch((error) => {
-//       res.status(500).send(error.name);
-//     });
-// });
 
 app.get("/users/table/days", authenticateUser, (req, res) => {
   getId(req)
@@ -286,6 +238,25 @@ app.post("/users/table/days", authenticateUser, (req, res) => {
     })
     .catch((error) => res.status(500).send(error.message));
 })
+
+app.delete("/users/table/days/:dayName", authenticateUser, (req, res) => {
+  getId(req)
+    .then((id) => {
+      if (!id) {
+        throw new Error("User not found");
+      }
+
+      const { dayName } = req.params;
+
+      return deleteDay(id, dayName);
+    })
+    .then(() => res.status(204).send())
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send(error.message);
+    });
+});
+
 
 app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) => {
   getId(req)
