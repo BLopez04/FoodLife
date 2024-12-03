@@ -32,7 +32,15 @@ mongoose.connect(CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console
 const app = express();
 const port = 8000;
 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,POST,DELETE',
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  credentials: true,
+  preflightContinue: false
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
