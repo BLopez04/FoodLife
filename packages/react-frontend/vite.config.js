@@ -4,9 +4,16 @@ import Terminal from "vite-plugin-terminal";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),
+  plugins: [
+    react(),
     Terminal({
-    console: 'terminal',
-    output: ['terminal', 'console']
-  })]
+      console: 'terminal',
+      output: ['terminal', 'console']
+    })
+  ],
+  build: {
+    rollupOptions: {
+      external: ['/@id/__x00__virtual:terminal/console']
+    }
+  }
 });

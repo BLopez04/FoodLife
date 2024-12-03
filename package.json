@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run dev -w react-frontend",
+    "start": "npm run -w express-backend",
+    "dev": "npm run -w express-backend",
+    "lint": "npx eslint . && npx prettier --check .",
     "test": "echo \"Error: no test specified\"",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },

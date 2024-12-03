@@ -5,6 +5,7 @@
   "main": "backend.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
+    "lint": "npm run lint",
     "dev": "npx nodemon backend.js",
     "start": "node backend.js"
   },
