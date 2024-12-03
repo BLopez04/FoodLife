@@ -25,15 +25,23 @@ const {
 
 dotenv.config();
 
-const { MONGO_CONNECTION_STRING } = process.env;
+const { CUSTOMCONNSTR_MONGO_CONNECTION_STRING } = process.env;
 
 mongoose.set("debug", true);
-mongoose.connect(MONGO_CONNECTION_STRING).catch((error) => console.log(error));
+mongoose.connect(CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console.log(error));
 
 const app = express();
 const port = 8000;
 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,POST,DELETE',
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  credentials: true,
+  preflightContinue: false
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -330,6 +338,6 @@ app.delete("/users/table/days/:dayName/:category/:itemId", authenticateUser, (re
 app.post("/signup", registerUser);
 app.post("/login", loginUser);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log(`REST API is listening.`);
 });
