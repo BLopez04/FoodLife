@@ -13,7 +13,6 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    // Replace with actual authentication logic
     fetch(`${API_PREFIX}/login/`, {
       method: "POST",
       headers: {
