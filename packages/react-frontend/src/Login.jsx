@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
 
-const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 function Login() {
   const [username, setUsername] = useState("");
