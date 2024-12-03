@@ -11,12 +11,8 @@ export const getToken = () => {
 
 export function addAuthHeader(otherHeaders = {}) {
   const token = getToken();
-  if (!token) {
-    return otherHeaders;
-  } else {
-    return {
-      ...otherHeaders,
-      Authorization: `Bearer ${token}`
-    };
+  if (token) {
+    otherHeaders['Authorization'] = `Bearer ${token}`;
   }
+  return otherHeaders;
 }

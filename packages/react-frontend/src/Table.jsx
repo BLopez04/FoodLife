@@ -277,7 +277,8 @@ function Table() {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
+      credentials: 'include'
     });
 
     return promise;
@@ -288,7 +289,8 @@ function Table() {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
+      credentials: 'include'
     });
 
     return promise;
@@ -300,7 +302,8 @@ function Table() {
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      credentials: 'include'
     });
 
     return promise
@@ -311,7 +314,8 @@ function Table() {
       method: "DELETE",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
+      credentials: 'include'
     });
   }
 
@@ -321,7 +325,8 @@ function Table() {
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      credentials: 'include'
     });
 
     return promise
@@ -333,6 +338,7 @@ function Table() {
       headers: addAuthHeader({
         "Content-Type": "application/json",
       }),
+      credentials: 'include'
     });
       
     return promise;
