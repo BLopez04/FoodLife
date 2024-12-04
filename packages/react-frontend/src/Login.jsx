@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
 
+const API_PREFIX = "https://foodlife.azurewebsites.net";
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -11,13 +13,13 @@ function Login() {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    // Replace with actual authentication logic
-    fetch("Http://localhost:8000/login", {
+    fetch(`${API_PREFIX}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({username: username, pwd: password})
+      body: JSON.stringify({username: username, pwd: password}),
+      credentials: 'include'
     })
       .then((res) => {
         if (res.status === 200) {

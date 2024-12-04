@@ -1,12 +1,13 @@
 // src/SignUp.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { terminal } from "virtual:terminal";
 import { setToken } from "./Auth.js";
 
 // Move the INVALID TOKEN, TOKEN etc into the Auth.js file
 // Use localStorage to have the token persists between pages (and access it)
 // Use the create auth header
+
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 function SignUp() {
   const [username, setUsername] = useState("");
@@ -28,12 +29,13 @@ function SignUp() {
       setErrorMessage("Username and Password required");
       return;
     } else {
-      fetch("Http://localhost:8000/signup", {
+      fetch(`${API_PREFIX}/signup/`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({username: username, pwd: password})
+          body: JSON.stringify({username: username, pwd: password}),
+          credentials: 'include'
       })
         .then((res) => {
           if (res.status === 201) {

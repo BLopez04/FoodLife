@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
 import "../scss/_table.scss";
 
+const API_PREFIX = "https://foodlife.azurewebsites.net";
+
 function Form(props) {
   const [data, setData] = useState({
     date: "",
     price: "",
-    item: "",
+    name: "",
     type: "personal"
   });
 
@@ -23,14 +25,14 @@ function Form(props) {
     const formattedData = {
       date: data.date,
       price: parseFloat(data.price || 0),
-      item: data.item,
+      name: data.name,
       type: data.type
     };
     props.handleSubmit(formattedData);
     setData({
       date: "",
       price: "",
-      item: "",
+      name: "",
       type: "personal"
     });
   }
@@ -45,12 +47,12 @@ function Form(props) {
         value={data.date}
         onChange={handleChange}
       />
-      <label htmlFor="item">Item</label>
+      <label htmlFor="name">Item</label>
       <input
         type="text"
-        name="item"
-        id="item"
-        value={data.item}
+        name="name"
+        id="name"
+        value={data.name}
         onChange={handleChange}
       />
       <div className="form-row">
@@ -109,7 +111,7 @@ function TableHeader() {
 function TableBody(props) {
   const formatItems = (items) => {
     return items
-      .map((item) => `$${item.price.toFixed(2)} : ${item.item}`)
+      .map((item) => `$${item.price.toFixed(2)} : ${item.name}`)
       .join("\n");
   };
 
@@ -144,22 +146,52 @@ function Table() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
 
-  useEffect(() => {
     getId()
       .then((res) => res.json())
       .then((json) => setId(json._id))
       .catch((error) => {
         console.log(error);
-      });
+    });  
+
+    fetchTableData()
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+        return res.json();
+      })
+      .then((table_data) => {
+        const formattedRows = table_data.tableDays.map((day) => ({
+          date: new Date(day.date).toISOString().split("T")[0],
+          p_total: day.personalTotal || 0,
+          m_total: day.mealplanTotal || 0,
+          g_total: day.groceryTotal || 0,
+          p_items: day.personalItems || [],
+          m_items: day.mealplanItems || [],
+          g_items: day.groceryItems || [],
+        }));
+        setRows(formattedRows);
+      })
+      .catch((error) => console.log(error));
   }, []);
+  
 
   function removeOneRow(index) {
-    const updated = rows.filter((row, i) => {
-      return i !== index;
-    });
-    setRows(updated);
+    const dayToDelete = rows[index].date;
+
+    deleteDay(dayToDelete)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+
+        const updated = rows.filter((row, i) => {
+          return i !== index;
+        });
+        setRows(updated);
+      })
+      .catch((error) => console.log(error));
   }
 
   const navigate = useNavigate();
@@ -174,7 +206,7 @@ function Table() {
   const updateList = (row) => {
     const index = rows.findIndex((v) => v.date === row.date);
 
-    if (!row.date || !row.item || !row.price) {
+    if (!row.date || !row.name || !row.price) {
       alert("Please enter a valid Date, Item and Price.");
       return;
     }
@@ -189,53 +221,119 @@ function Table() {
           g_total: row.type === "grocery" ? parseFloat(row.price || 0) : 0,
           p_items:
             row.type === "personal"
-              ? [{ item: row.item, price: row.price }]
+              ? [{ name: row.name, price: row.price }]
               : [],
           m_items:
-            row.type === "meal" ? [{ item: row.item, price: row.price }] : [],
+            row.type === "meal" ? [{ name: row.name, price: row.price }] : [],
           g_items:
-            row.type === "grocery" ? [{ item: row.item, price: row.price }] : []
+            row.type === "grocery" ? [{ name: row.name, price: row.price }] : []
         }
       ]);
 
-      // const postday = fetch("/users/:id/table/days")
+      addDay({ date: row.date }).then((res) => res.json())
+        .then(() =>
+          addItem(row.date, row.type,{ name: row.name, price: row.price }))
+        .then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        });
+
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
-        rows[index].p_items.push({ item: row.item, price: row.price });
+        rows[index].p_items.push({ name: row.name, price: row.price });
       } else if (row.type === "meal") {
         rows[index].m_total += parseFloat(row.price || 0);
-        rows[index].m_items.push({ item: row.item, price: row.price });
+        rows[index].m_items.push({ name: row.name, price: row.price });
       } else if (row.type === "grocery") {
         rows[index].g_total += parseFloat(row.price || 0);
-        rows[index].g_items.push({ item: row.item, price: row.price });
+        rows[index].g_items.push({ name: row.name, price: row.price });
       }
 
       setRows([...rows]);
+
+      addItem(row.date, row.type,{ name: row.name, price: row.price }).then((res) => res.json())
+        .catch((error) => {
+          console.log(error);
+        });
+
     }
+
+
+
   };
 
 
   function getName() {
-    const promise = fetch("Http://localhost:8000/users", {
+    const promise = fetch(`${API_PREFIX}/users/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
+      credentials: 'include'
     });
-    return promise;
 
+    return promise;
   }
 
   function getId() {
-    const promise = fetch("Http://localhost:8000/users/id", {
+    const promise = fetch(`${API_PREFIX}/users/id/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
+      credentials: 'include'
     });
-    return promise;
 
+    return promise;
+  }
+
+  function addDay(body) {
+    const promise = fetch(`${API_PREFIX}/users/table/days/`, {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(body),
+      credentials: 'include'
+    });
+
+    return promise
+  }
+
+  function deleteDay(dayName) {
+    return fetch(`http://localhost:8000/users/table/days/${dayName}`, {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      credentials: 'include'
+    });
+  }
+
+  function addItem(dayName, category, body) {
+    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}/`, {
+      method: "POST",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify(body),
+      credentials: 'include'
+    });
+
+    return promise
+  }
+
+  function fetchTableData() {
+    const promise = fetch(`${API_PREFIX}/users/table/`, {
+      method: "GET",
+      headers: addAuthHeader({
+        "Content-Type": "application/json",
+      }),
+      credentials: 'include'
+    });
+      
+    return promise;
   }
 
   return (
