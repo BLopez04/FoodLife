@@ -25,15 +25,17 @@ const {
 
 dotenv.config();
 
+const { CUSTOMCONNSTR_MONGO_CONNECTION_STRING } = process.env;
+const { ALLOWED_ORIGIN } = process.env;
 
 mongoose.set("debug", true);
-mongoose.connect(process.env.CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console.log(error));
+mongoose.connect(CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console.log(error));
 
 const app = express();
 const port = 8000;
 
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGIN,
+  origin: ALLOWED_ORIGIN,
   methods: 'GET,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   credentials: true,
@@ -41,11 +43,11 @@ const corsOptions = {
   optionsSuccessStatus: 204
 };
 
-console.log(process.env.ALLOWED_ORIGIN);
-console.log(process.env.CUSTOMCONNSTR_MONGO_CONNECTION_STRING);
+console.log(ALLOWED_ORIGIN);
+console.log(CUSTOMCONNSTR_MONGO_CONNECTION_STRING);
 
-app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
