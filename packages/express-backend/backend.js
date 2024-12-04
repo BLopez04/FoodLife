@@ -19,20 +19,36 @@ const {
   findTableByUserId,
   updateTotal,
   deleteUser,
+  deleteDay,
   deleteItem
 } = userService;
 
 dotenv.config();
 
 const { MONGO_CONNECTION_STRING } = process.env;
+const { ALLOWED_ORIGIN } = process.env;
 
 mongoose.set("debug", true);
 mongoose.connect(MONGO_CONNECTION_STRING).catch((error) => console.log(error));
 
 const app = express();
 const port = 8000;
+/*
+const corsOptions = {
+  origin: ALLOWED_ORIGIN,
+  methods: 'GET,POST,DELETE',
+  allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+*/
+
+console.log(ALLOWED_ORIGIN);
+console.log(MONGO_CONNECTION_STRING);
 
 app.use(cors());
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -63,30 +79,6 @@ app.get("/users/id", authenticateUser, (req, res) => {
     });
 });
 
-// app.get("/users/table", authenticateUser, (req, res) => {
-//   getId(req)
-//     .then((id) => {
-//       if (id) {
-//         res.send({ _id: id })
-//       }
-//       findTableByUserId(id)
-//         .then((result) => {
-//           if (result) {
-//             res.send(result);
-//           } else {
-//             res.status(404).send(`Not Found: ${id}`);
-//           }
-//         })
-//         .catch((error) => {
-//           res.status(500).send(error.name);
-//         });
-//     })
-//     .catch((error) => {
-//       res.status(500).send(error.name);
-//     });
-
-// });
-
 app.get("/users/table", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
@@ -107,31 +99,6 @@ app.get("/users/table", authenticateUser, (req, res) => {
       res.status(500).send(error.name || "Internal Server Error");
     });
 });
-
-
-// app.get("/users/table/days", authenticateUser, (req, res) => {
-
-//   getId(req)
-//     .then((id) => {
-//       if (id) {
-//         res.send({ _id: id })
-//       }
-//       getTableDays(id)
-//         .then((result) => {
-//           if (result) {
-//             res.send(result);
-//           } else {
-//             res.status(404).send(`Not Found: ${id}`);
-//           }
-//         })
-//         .catch((error) => {
-//           res.status(500).send(error.name);
-//         });
-//     })
-//     .catch((error) => {
-//       res.status(500).send(error.name);
-//     });
-// });
 
 app.get("/users/table/days", authenticateUser, (req, res) => {
   getId(req)
@@ -277,6 +244,25 @@ app.post("/users/table/days", authenticateUser, (req, res) => {
     .catch((error) => res.status(500).send(error.message));
 })
 
+app.delete("/users/table/days/:dayName", authenticateUser, (req, res) => {
+  getId(req)
+    .then((id) => {
+      if (!id) {
+        throw new Error("User not found");
+      }
+
+      const { dayName } = req.params;
+
+      return deleteDay(id, dayName);
+    })
+    .then(() => res.status(204).send())
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send(error.message);
+    });
+});
+
+
 app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
@@ -359,6 +345,6 @@ app.delete("/users/table/days/:dayName/:category/:itemId", authenticateUser, (re
 app.post("/signup", registerUser);
 app.post("/login", loginUser);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log(`REST API is listening.`);
 });

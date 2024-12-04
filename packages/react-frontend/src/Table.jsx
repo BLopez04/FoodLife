@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
-import { terminal } from 'virtual:terminal'
 import "../scss/_table.scss";
 
-const API_PREFIX = import.meta.env.VITE_API_PREFIX;
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 function Form(props) {
   const [data, setData] = useState({
@@ -175,15 +174,24 @@ function Table() {
         setRows(formattedRows);
       })
       .catch((error) => console.log(error));
-
   }, []);
   
 
   function removeOneRow(index) {
-    const updated = rows.filter((row, i) => {
-      return i !== index;
-    });
-    setRows(updated);
+    const dayToDelete = rows[index].date;
+
+    deleteDay(dayToDelete)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+
+        const updated = rows.filter((row, i) => {
+          return i !== index;
+        });
+        setRows(updated);
+      })
+      .catch((error) => console.log(error));
   }
 
   const navigate = useNavigate();
@@ -222,8 +230,6 @@ function Table() {
         }
       ]);
 
-      terminal.log(row.date);
-
       addDay({ date: row.date }).then((res) => res.json())
         .then(() =>
           addItem(row.date, row.type,{ name: row.name, price: row.price }))
@@ -231,9 +237,6 @@ function Table() {
         .catch((error) => {
           console.log(error);
         });
-
-      terminal.log("Added a day")
-      terminal.log("Added an item")
 
     } else {
       if (row.type === "personal") {
@@ -248,13 +251,11 @@ function Table() {
       }
 
       setRows([...rows]);
-      terminal.log(row.date, row.type, row.name, row.price);
 
       addItem(row.date, row.type,{ name: row.name, price: row.price }).then((res) => res.json())
         .catch((error) => {
           console.log(error);
         });
-      terminal.log("Added an item")
 
     }
 
@@ -264,53 +265,62 @@ function Table() {
 
 
   function getName() {
-    const promise = fetch(`${API_PREFIX}/users`, {
+    const promise = fetch(`${API_PREFIX}/users/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
     });
 
     return promise;
   }
 
   function getId() {
-    const promise = fetch(`${API_PREFIX}/users/id`, {
+    const promise = fetch(`${API_PREFIX}/users/id/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      })
+      }),
     });
 
     return promise;
   }
 
   function addDay(body) {
-    const promise = fetch(`${API_PREFIX}/users/table/days`, {
+    const promise = fetch(`${API_PREFIX}/users/table/days/`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     return promise
   }
 
+  function deleteDay(dayName) {
+    return fetch(`http://localhost:8000/users/table/days/${dayName}`, {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      }),
+    });
+  }
+
   function addItem(dayName, category, body) {
-    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}`, {
+    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}/`, {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
 
     return promise
   }
 
   function fetchTableData() {
-    const promise = fetch(`${API_PREFIX}/users/table`, {
+    const promise = fetch(`${API_PREFIX}/users/table/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json",
