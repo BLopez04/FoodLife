@@ -35,7 +35,6 @@ function SignUp() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({username: username, pwd: password}),
-          credentials: 'include'
       })
         .then((res) => {
           if (res.status === 201) {
