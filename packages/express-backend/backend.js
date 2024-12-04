@@ -25,15 +25,15 @@ const {
 
 dotenv.config();
 
-const { CUSTOMCONNSTR_MONGO_CONNECTION_STRING } = process.env;
+const { MONGO_CONNECTION_STRING } = process.env;
 const { ALLOWED_ORIGIN } = process.env;
 
 mongoose.set("debug", true);
-mongoose.connect(CUSTOMCONNSTR_MONGO_CONNECTION_STRING).catch((error) => console.log(error));
+mongoose.connect(MONGO_CONNECTION_STRING).catch((error) => console.log(error));
 
 const app = express();
 const port = 8000;
-
+/*
 const corsOptions = {
   origin: ALLOWED_ORIGIN,
   methods: 'GET,POST,DELETE',
@@ -42,11 +42,12 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204
 };
+*/
 
 console.log(ALLOWED_ORIGIN);
-console.log(CUSTOMCONNSTR_MONGO_CONNECTION_STRING);
+console.log(MONGO_CONNECTION_STRING);
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
