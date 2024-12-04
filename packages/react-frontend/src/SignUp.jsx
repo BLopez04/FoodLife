@@ -7,7 +7,7 @@ import { setToken } from "./Auth.js";
 // Use localStorage to have the token persists between pages (and access it)
 // Use the create auth header
 
-const API_PREFIX = "https://foodlife.azurewebsites.net";
+const API_PREFIX = "http://localhost:8000";
 
 function SignUp() {
   const [username, setUsername] = useState("");
