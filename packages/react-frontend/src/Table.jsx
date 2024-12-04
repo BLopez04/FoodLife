@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
 import "../scss/_table.scss";
 
-const API_PREFIX = "https://foodlife.azurewebsites.net:8000";
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 function Form(props) {
   const [data, setData] = useState({
