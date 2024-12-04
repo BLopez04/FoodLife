@@ -35,7 +35,7 @@ const app = express();
 const port = 8000;
 
 const corsOptions = {
-  origin: ALLOWED_ORIGIN,
+  origin: 'https://ambitious-grass-040551c1e.4.azurestaticapps.net',
   methods: 'GET,POST,DELETE',
   allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
   credentials: true,
@@ -44,6 +44,7 @@ const corsOptions = {
 };
 
 console.log(ALLOWED_ORIGIN);
+console.log(CUSTOMCONNSTR_MONGO_CONNECTION_STRING);
 
 app.use(cors(corsOptions));
 
