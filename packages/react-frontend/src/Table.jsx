@@ -346,6 +346,9 @@ function Table() {
           <TableBody rowData={rows} removeRow={removeOneRow} />
         </table>
       </div>
+      
+      <button className="overview-button" onClick={() => navigate("/overview")}> ← Back To Overview </button>
+      
     </div>
   );
 }

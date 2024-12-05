@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
+import "../scss/_signup.scss";
 
 // Move the INVALID TOKEN, TOKEN etc into the Auth.js file
 // Use localStorage to have the token persists between pages (and access it)
@@ -50,7 +51,7 @@ function SignUp() {
             setToken(payload.token);
             alert("Sign-up successful!");
             setErrorMessage("");
-            navigate("/table");
+            navigate("/overview");
           }
         })
         .catch((error) => {
