@@ -6,7 +6,7 @@ import classes from './Landing.module.css';
 
 
 // Images TODO need some images
-import food1 from './images/Foo.jpg'; n
+import food1 from './images/Foo.jpg';
 import food2 from './images/FoodIconTwo.jpg';
 import food3 from './images/FoodIconThree.jpg';
 import food4 from './images/HealthyFoodIcon.png';
