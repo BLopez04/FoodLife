@@ -119,21 +119,39 @@ function TableBody(props) {
         <td>${row.g_total.toFixed(2)}</td>
         <td>
           <button
-            onClick={() => props.openModal(row.p_items)}
+            onClick={() =>
+              props.openModal({
+                day: row.date,
+                category: "personal",
+                items: row.p_items
+              })
+            }
             className="open-modal">
             Items
           </button>
         </td>
         <td>
           <button
-            onClick={() => props.openModal(row.m_items)}
+            onClick={() =>
+              props.openModal({
+                day: row.date,
+                category: "mealplan",
+                items: row.m_items
+              })
+            }
             className="open-modal">
             Items
           </button>
         </td>
         <td>
           <button
-            onClick={() => props.openModal(row.g_items)}
+            onClick={() =>
+              props.openModal({
+                day: row.date,
+                category: "grocery",
+                items: row.g_items
+              })
+            }
             className="open-modal">
             Items
           </button>
@@ -149,8 +167,40 @@ function TableBody(props) {
   return <tbody>{rows}</tbody>;
 }
 
-function Modal({ isOpen, onClose, items }) {
+function Modal({ isOpen, onClose, data, onItemDelete }) {
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (data.items) {
+      setRows(data.items);
+    }
+  }, [data.items]);
+
   if (!isOpen) return null;
+
+  const deleteItem = (day, category, id) =>
+    fetch(`http://localhost:8000/users/table/days/${day}/${category}/${id}`, {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    });
+
+  const removeOneItem = (index) => {
+    deleteItem(data.day, data.category, index)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`${res.status}`);
+        }
+        const item = rows[index];
+        const updated = rows.filter((row, i) => {
+          return i !== index;
+        });
+        setRows(updated);
+        onItemDelete(data.day, data.category, item.price);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div className="modal-overlay">
@@ -168,14 +218,16 @@ function Modal({ isOpen, onClose, items }) {
               </tr>
             </thead>
             <tbody>
-              {items.map((item, index) => (
+              {rows.map((item, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
                   <td>${item.price.toFixed(2)}</td>
                   <td>
                     <button
-                      onClick={() => console.log(index)}
-                      //onClick={() => props.deleteItem(dayName, category, itemId)}
+                      // onClick={() =>
+                      //   console.log(index, data.day, data.category)
+                      // }
+                      onClick={() => removeOneItem(index)}
                       className="delete">
                       Delete
                     </button>
@@ -196,16 +248,16 @@ function Table() {
   const [_id, setId] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalItems, setModalItems] = useState([]);
+  const [modalData, setmodalData] = useState([]);
 
   const openModal = (items) => {
-    setModalItems(items);
+    setmodalData(items);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalItems([]);
+    setmodalData([]);
   };
 
   useEffect(() => {
@@ -373,6 +425,7 @@ function Table() {
   }
 
   function addItem(dayName, category, body) {
+    console.log(`${API_PREFIX}/users/table/days/${dayName}/${category}/`);
     const promise = fetch(
       `${API_PREFIX}/users/table/days/${dayName}/${category}/`,
       {
@@ -387,18 +440,6 @@ function Table() {
     return promise;
   }
 
-  // function deleteItem(dayName, category, itemId) {
-  //   return fetch(
-  //     `http://localhost:8000/users/table/days/${dayName}/${category}/${itemId}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: addAuthHeader({
-  //         "Content-Type": "application/json"
-  //       })
-  //     }
-  //   );
-  // }
-
   function fetchTableData() {
     const promise = fetch(`${API_PREFIX}/users/table/`, {
       method: "GET",
@@ -409,6 +450,40 @@ function Table() {
 
     return promise;
   }
+
+  const handleItemDelete = (day, category, price) => {
+    setRows((prevRows) => {
+      return prevRows.map((row) => {
+        if (row.date === day) {
+          const updatedRow = { ...row };
+          if (category === "personal") {
+            updatedRow.p_total = parseFloat(
+              (updatedRow.p_total - price).toFixed(2)
+            );
+            updatedRow.p_items = updatedRow.p_items.filter(
+              (item) => item._id !== rows.index
+            );
+          } else if (category === "mealplan") {
+            updatedRow.m_total = parseFloat(
+              (updatedRow.m_total - price).toFixed(2)
+            );
+            updatedRow.m_items = updatedRow.m_items.filter(
+              (item) => item._id !== rows.index
+            );
+          } else if (category === "grocery") {
+            updatedRow.g_total = parseFloat(
+              (updatedRow.g_total - price).toFixed(2)
+            );
+            updatedRow.g_items = updatedRow.g_items.filter(
+              (item) => item._id !== rows.index
+            );
+          }
+          return updatedRow;
+        }
+        return row;
+      });
+    });
+  };
 
   return (
     <div className="page-container">
@@ -433,7 +508,12 @@ function Table() {
           />
         </table>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} items={modalItems} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        data={modalData}
+        onItemDelete={handleItemDelete}
+      />
     </div>
   );
 }

@@ -248,6 +248,7 @@ app.delete("/users/table/days/:dayName", authenticateUser, (req, res) => {
       }
 
       const { dayName } = req.params;
+      console.log(id, dayName);
 
       return deleteDay(id, dayName);
     })
@@ -337,14 +338,17 @@ app.delete(
   authenticateUser,
   (req, res) => {
     getId(req)
-      .then((id) => {
-        if (!id) {
+      .then((userId) => {
+        if (!userId) {
           throw new Error("User Id Not Found");
         }
-        const { dayId, category, itemId } = req.params;
-        return deleteItem(id, dayId, category, itemId).then(() =>
-          res.status(204).send()
-        );
+        const { dayName, category, itemId } = req.params;
+        return deleteItem(userId, dayName, category, itemId)
+          .then(() => res.status(204).send())
+          .catch((error) => {
+            console.error(error.message);
+            res.status(404).send(error.message);
+          });
       })
       .catch((error) => res.status(500).send(error.message));
   }
