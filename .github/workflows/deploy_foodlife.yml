@@ -23,13 +23,13 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install --workplaces=false
+          npm install --workplaces false
           npm run -w express-backend build --if-present
           npm run -w express-backend test --if-present
         working-directory: packages/express-backend
-
+        
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip .
         working-directory: packages/express-backend
 
       - name: Upload artifact for deployment job
@@ -59,15 +59,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5D263E4953BA4CD59282BB2123026A28 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E9AAFC0EAD7544E9B165E540D8F586C4 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_89E4EAD82AD64871B7960192423A4431 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A064D98D0FCF4071A141C5B7B30A705A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_2247EFDEA8CD4673916619484400FD12 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4FAFD53FBE3F4CB9B97DA73DF9D7095C }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'foodlife'
+          app-name: 'FoodLife'
           slot-name: 'Production'
           package: .
-          
