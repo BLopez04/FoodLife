@@ -59,7 +59,7 @@ app.get("/users", authenticateUser, (req, res) => {
   getUsername(req)
     .then((username) => {
       if (username) {
-        res.send({ username: username })
+        res.send({ username: username });
       }
     })
     .catch((error) => {
@@ -71,7 +71,7 @@ app.get("/users/id", authenticateUser, (req, res) => {
   getId(req)
     .then((id) => {
       if (id) {
-        res.send({ _id: id })
+        res.send({ _id: id });
       }
     })
     .catch((error) => {
@@ -107,13 +107,12 @@ app.get("/users/table/days", authenticateUser, (req, res) => {
         return res.status(404).send("User ID not found.");
       }
 
-      return getTableDays(id)
-        .then((result) => {
-          if (!result) {
-            return res.status(404).send(`No days found for user ID: ${id}`);
-          }
+      return getTableDays(id).then((result) => {
+        if (!result) {
+          return res.status(404).send(`No days found for user ID: ${id}`);
+        }
 
-          return res.send(result);
+        return res.send(result);
       });
     })
     .catch((error) => {
@@ -122,16 +121,14 @@ app.get("/users/table/days", authenticateUser, (req, res) => {
     });
 });
 
-
 app.get("/users/table/days/:dayName", authenticateUser, (req, res) => {
   /* For sure needs to get reformatted like the post
 (so getId(...).then(...=> getTableDayId) to the rest of the work */
-  const id = getId(req)
-    .then((id) => {
-      if (id) {
-        return ({ _id: id })
-      }
-    })
+  const id = getId(req).then((id) => {
+    if (id) {
+      return { _id: id };
+    }
+  });
   console.log(id);
 
   const dayId = req.params;
@@ -158,12 +155,11 @@ app.get("/users/table/days/:dayName/items", authenticateUser, (req, res) => {
   /* For sure needs to get reformatted like the post
   (so getId(...).then(...=> getTableDayId) to the rest of the work */
 
-  const id = getId(req)
-    .then((id) => {
-      if (id) {
-        return ({ _id: id })
-      }
-    })
+  const id = getId(req).then((id) => {
+    if (id) {
+      return { _id: id };
+    }
+  });
   console.log(id);
 
   const dayId = req.params;
@@ -191,43 +187,45 @@ app.get("/users/table/days/:dayName/items", authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/table/days/:dayName/:category", authenticateUser, (req, res) => {
-  /* For sure needs to get reformatted like the post */
-  const id = getId(req)
-    .then((id) => {
+app.get(
+  "/users/table/days/:dayName/:category",
+  authenticateUser,
+  (req, res) => {
+    /* For sure needs to get reformatted like the post */
+    const id = getId(req).then((id) => {
       if (id) {
-        return ({ _id: id })
+        return { _id: id };
       }
-    })
-  console.log(id);
-
-  const { dayId, category} = req.params;
-
-  findUserById(id)
-    .then((user) => {
-      if (!user) {
-        res.status(404).send(`Not Found: ${id}`);
-      }
-
-      const day = user.table.tableDays.id(dayId);
-      if (!day) {
-        res.status(404).send(`Not Found: ${dayId}`);
-      }
-
-      res.send(day[category]);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
     });
-});
+    console.log(id);
 
-app.post("/users", authenticateUser, (req, res) => {
-    const userToAdd = req.body;
-    addUser(userToAdd)
-      .then((result) => res.status(201).send(result))
-      .catch((error) => res.status(500).send(error.message));
+    const { dayId, category } = req.params;
+
+    findUserById(id)
+      .then((user) => {
+        if (!user) {
+          res.status(404).send(`Not Found: ${id}`);
+        }
+
+        const day = user.table.tableDays.id(dayId);
+        if (!day) {
+          res.status(404).send(`Not Found: ${dayId}`);
+        }
+
+        res.send(day[category]);
+      })
+      .catch((error) => {
+        res.status(500).send(error.name);
+      });
   }
 );
+
+app.post("/users", authenticateUser, (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd)
+    .then((result) => res.status(201).send(result))
+    .catch((error) => res.status(500).send(error.message));
+});
 
 app.post("/users/table/days", authenticateUser, (req, res) => {
   getId(req)
@@ -235,14 +233,12 @@ app.post("/users/table/days", authenticateUser, (req, res) => {
       if (id) {
         console.log("posting to day of id", id);
 
-        const day = req.body
-        return addDay(id, day)
-          .then((result) => res.status(201).send(result))
-
+        const day = req.body;
+        return addDay(id, day).then((result) => res.status(201).send(result));
       }
     })
     .catch((error) => res.status(500).send(error.message));
-})
+});
 
 app.delete("/users/table/days/:dayName", authenticateUser, (req, res) => {
   getId(req)
@@ -262,19 +258,28 @@ app.delete("/users/table/days/:dayName", authenticateUser, (req, res) => {
     });
 });
 
+app.post(
+  "/users/table/days/:dayName/:category",
+  authenticateUser,
+  (req, res) => {
+    getId(req)
+      .then((id) => {
+        if (!id) {
+          throw new Error("User Id Not Found");
+        }
 
-app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) => {
-  getId(req)
-    .then((id) => {
-      if (!id) {
-        throw new Error("User Id Not Found");
-      }
+        const { dayName, category } = req.params;
+        console.log(
+          "posting to day",
+          dayName,
+          "of id",
+          id,
+          "under category",
+          category
+        );
 
-      const { dayName, category } = req.params;
-      console.log("posting to day", dayName, "of id", id, "under category", category);
-
-      return getTableDayId(id, dayName)
-        .then((dayId) => {
+        return getTableDayId(id, dayName)
+          .then((dayId) => {
             console.log("day id is ", dayId);
             console.log("item is", req.body);
 
@@ -286,35 +291,35 @@ app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) =>
               personal: "personalItems",
               meal: "mealplanItems",
               grocery: "groceryItems"
-            }
+            };
 
             const totMap = {
               personal: "personalTotal",
               meal: "mealplanTotal",
               grocery: "groceryTotal"
-            }
+            };
 
             const cat = catMap[category];
             const tot = totMap[category];
             const itemToAdd = req.body;
 
             return addItemToDay(id, dayId, cat, itemToAdd)
-              .then(() =>
-                updateTotal(id, dayId, tot, itemToAdd.price))
+              .then(() => updateTotal(id, dayId, tot, itemToAdd.price))
               .then((result) => {
-                res.status(201).send(result)
+                res.status(201).send(result);
               });
           })
-        .catch((error) => {
-          console.error("Error in category add block", error);
-          res.status(500).send(error.message)
-        });
-    })
-    .catch((error) => {
-      console.error("Error in getId call", error);
-      res.status(500).send(error.message);
-    });
-});
+          .catch((error) => {
+            console.error("Error in category add block", error);
+            res.status(500).send(error.message);
+          });
+      })
+      .catch((error) => {
+        console.error("Error in getId call", error);
+        res.status(500).send(error.message);
+      });
+  }
+);
 
 app.delete("/users", authenticateUser, (req, res) => {
   getId(req)
@@ -322,25 +327,28 @@ app.delete("/users", authenticateUser, (req, res) => {
       if (!id) {
         throw new Error("User Id Not Found");
       }
-      return deleteUser(id)
+      return deleteUser(id);
     })
     .then((result) => res.send(result));
 });
 
-app.delete("/users/table/days/:dayName/:category/:itemId", authenticateUser, (req, res) => {
-  getId(req)
-    .then((id) => {
-      if (!id) {
-        throw new Error("User Id Not Found");
-      }
-      const { dayId, category, itemId } = req.params;
-      return deleteItem(id, dayId, category, itemId)
-        .then(() => res.status(204).send())
-
-    }).catch((error) => res.status(500).send(error.message));
-
-});
-
+app.delete(
+  "/users/table/days/:dayName/:category/:itemId",
+  authenticateUser,
+  (req, res) => {
+    getId(req)
+      .then((id) => {
+        if (!id) {
+          throw new Error("User Id Not Found");
+        }
+        const { dayId, category, itemId } = req.params;
+        return deleteItem(id, dayId, category, itemId).then(() =>
+          res.status(204).send()
+        );
+      })
+      .catch((error) => res.status(500).send(error.message));
+  }
+);
 
 app.post("/signup", registerUser);
 app.post("/login", loginUser);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
+
 import "../scss/_table.scss";
 
 const API_PREFIX = "http://localhost:8000";
@@ -109,12 +110,6 @@ function TableHeader() {
 }
 
 function TableBody(props) {
-  const formatItems = (items) => {
-    return items
-      .map((item) => `$${item.price.toFixed(2)} : ${item.name}`)
-      .join("\n");
-  };
-
   const rows = props.rowData.map((row, index) => {
     return (
       <tr key={index}>
@@ -122,11 +117,31 @@ function TableBody(props) {
         <td>${row.p_total.toFixed(2)}</td>
         <td>${row.m_total.toFixed(2)}</td>
         <td>${row.g_total.toFixed(2)}</td>
-        <td>{formatItems(row.p_items)}</td>
-        <td>{formatItems(row.m_items)}</td>
-        <td>{formatItems(row.g_items)}</td>
         <td>
-          <button onClick={() => props.removeRow(index)}>Delete</button>
+          <button
+            onClick={() => props.openModal(row.p_items)}
+            className="open-modal">
+            Items
+          </button>
+        </td>
+        <td>
+          <button
+            onClick={() => props.openModal(row.m_items)}
+            className="open-modal">
+            Items
+          </button>
+        </td>
+        <td>
+          <button
+            onClick={() => props.openModal(row.g_items)}
+            className="open-modal">
+            Items
+          </button>
+        </td>
+        <td>
+          <button onClick={() => props.removeRow(index)} className="delete">
+            Delete
+          </button>
         </td>
       </tr>
     );
@@ -134,10 +149,64 @@ function TableBody(props) {
   return <tbody>{rows}</tbody>;
 }
 
+function Modal({ isOpen, onClose, items }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button onClick={onClose} className="modal-close">
+          ✕
+        </button>
+        <div className="modal-inner">
+          <h2 className="modal-title">Items</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>${item.price.toFixed(2)}</td>
+                  <td>
+                    <button
+                      onClick={() => console.log(index)}
+                      //onClick={() => props.deleteItem(dayName, category, itemId)}
+                      className="delete">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Table() {
   const [rows, setRows] = useState([]);
   const [username, setUsername] = useState("");
   const [_id, setId] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalItems, setModalItems] = useState([]);
+
+  const openModal = (items) => {
+    setModalItems(items);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalItems([]);
+  };
 
   useEffect(() => {
     getName()
@@ -152,7 +221,7 @@ function Table() {
       .then((json) => setId(json._id))
       .catch((error) => {
         console.log(error);
-    });  
+      });
 
     fetchTableData()
       .then((res) => {
@@ -169,13 +238,12 @@ function Table() {
           g_total: day.groceryTotal || 0,
           p_items: day.personalItems || [],
           m_items: day.mealplanItems || [],
-          g_items: day.groceryItems || [],
+          g_items: day.groceryItems || []
         }));
         setRows(formattedRows);
       })
       .catch((error) => console.log(error));
   }, []);
-  
 
   function removeOneRow(index) {
     const dayToDelete = rows[index].date;
@@ -197,10 +265,10 @@ function Table() {
   const navigate = useNavigate();
 
   function logOut() {
-      setToken("INVALID_TOKEN");
-      setUsername("");
-      setId("");
-      navigate("/login");
+    setToken("INVALID_TOKEN");
+    setUsername("");
+    setId("");
+    navigate("/login");
   }
 
   const updateList = (row) => {
@@ -230,14 +298,15 @@ function Table() {
         }
       ]);
 
-      addDay({ date: row.date }).then((res) => res.json())
+      addDay({ date: row.date })
+        .then((res) => res.json())
         .then(() =>
-          addItem(row.date, row.type,{ name: row.name, price: row.price }))
+          addItem(row.date, row.type, { name: row.name, price: row.price })
+        )
         .then((res) => res.json())
         .catch((error) => {
           console.log(error);
         });
-
     } else {
       if (row.type === "personal") {
         rows[index].p_total += parseFloat(row.price || 0);
@@ -252,24 +321,20 @@ function Table() {
 
       setRows([...rows]);
 
-      addItem(row.date, row.type,{ name: row.name, price: row.price }).then((res) => res.json())
+      addItem(row.date, row.type, { name: row.name, price: row.price })
+        .then((res) => res.json())
         .catch((error) => {
           console.log(error);
         });
-
     }
-
-
-
   };
-
 
   function getName() {
     const promise = fetch(`${API_PREFIX}/users/`, {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      }),
+      })
     });
 
     return promise;
@@ -280,7 +345,7 @@ function Table() {
       method: "GET",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      }),
+      })
     });
 
     return promise;
@@ -292,10 +357,10 @@ function Table() {
       headers: addAuthHeader({
         "Content-Type": "application/json"
       }),
-      body: JSON.stringify(body),
+      body: JSON.stringify(body)
     });
 
-    return promise
+    return promise;
   }
 
   function deleteDay(dayName) {
@@ -303,49 +368,72 @@ function Table() {
       method: "DELETE",
       headers: addAuthHeader({
         "Content-Type": "application/json"
-      }),
+      })
     });
   }
 
   function addItem(dayName, category, body) {
-    const promise = fetch(`${API_PREFIX}/users/table/days/${dayName}/${category}/`, {
-      method: "POST",
-      headers: addAuthHeader({
-        "Content-Type": "application/json"
-      }),
-      body: JSON.stringify(body),
-    });
+    const promise = fetch(
+      `${API_PREFIX}/users/table/days/${dayName}/${category}/`,
+      {
+        method: "POST",
+        headers: addAuthHeader({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify(body)
+      }
+    );
 
-    return promise
+    return promise;
   }
+
+  // function deleteItem(dayName, category, itemId) {
+  //   return fetch(
+  //     `http://localhost:8000/users/table/days/${dayName}/${category}/${itemId}`,
+  //     {
+  //       method: "DELETE",
+  //       headers: addAuthHeader({
+  //         "Content-Type": "application/json"
+  //       })
+  //     }
+  //   );
+  // }
 
   function fetchTableData() {
     const promise = fetch(`${API_PREFIX}/users/table/`, {
       method: "GET",
       headers: addAuthHeader({
-        "Content-Type": "application/json",
-      }),
+        "Content-Type": "application/json"
+      })
     });
-      
+
     return promise;
   }
 
   return (
     <div className="page-container">
       <div className="header">
-        <h1>Welcome, {username}, {_id}</h1>
+        <h1>
+          Welcome, {username}, {_id}
+        </h1>
       </div>
       <input type="button" value="LogOut" onClick={logOut} />
       <div className="form">
         <h2>Add Item</h2>
         <Form handleSubmit={updateList} />
       </div>
+
       <div className="table">
         <table>
           <TableHeader />
-          <TableBody rowData={rows} removeRow={removeOneRow} />
+          <TableBody
+            rowData={rows}
+            removeRow={removeOneRow}
+            openModal={openModal}
+          />
         </table>
       </div>
+      <Modal isOpen={isModalOpen} onClose={closeModal} items={modalItems} />
     </div>
   );
 }
