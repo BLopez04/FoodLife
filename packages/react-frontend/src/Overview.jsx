@@ -10,8 +10,35 @@ function Overview() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Today");
   const [username, setUsername] = useState("");
-  const [budget, setBudget] = useState({ personal: 0, grocery: 0, mealPlan: 0 });
+  const [budget, setBudget] = useState({ personalBudget: 0, groceryBudget: 0, mealplanBudget: 0 });
   const [rows, setRows] = useState([]);
+
+  function updateBudget(budgetType) {
+    const input = prompt(`Enter new ${budgetType}`)
+    if(input) {
+      const newBudget = Number.parseFloat(input)
+      if(!newBudget) {
+	alert("Please enter a valid number")
+      }
+      fetch(`${API_PREFIX}/users/budget`, {
+	method: "POST",
+	headers: addAuthHeader({
+	    "Content-Type": "application/json"
+	  }),
+	  body: JSON.stringify({budgetType: budgetType, budget: newBudget})
+      }).then((res) => { 
+	if(res.status == 200) {
+	  setBudget(prevBudget => {
+	    const nextBudget = Object.assign({}, prevBudget);
+	    nextBudget[budgetType] = newBudget
+	    return nextBudget;
+	  });
+	}})
+      .catch((error) => {
+	console.log(error);
+      })
+    } 
+  }
 
   function fetchUsername() {
     const promise = fetch(`${API_PREFIX}/users`, {
@@ -46,9 +73,9 @@ function Overview() {
       })
       .then((json) => {
 	setBudget({
-	  personal: json.personalBudget, 
-	  grocery: json.groceryBudget,
-	  mealPlan: json.mealplanBudget
+	  personalBudget: json.personalBudget, 
+	  groceryBudget: json.groceryBudget,
+	  mealplanBudget: json.mealplanBudget
         })
           const formattedRows = json.tableDays.map((day) => ({
           date: new Date(day.date).toISOString().split("T")[0],
@@ -59,7 +86,6 @@ function Overview() {
           m_items: day.mealplanItems || [],
           g_items: day.groceryItems || [],
         }));
-	  console.log(formattedRows);
 	  setRows(formattedRows);
       })
       .catch((error) => {
@@ -68,7 +94,7 @@ function Overview() {
   }, []);
 
   const renderBudgetDetails = (type, budget) => {
-    var spent = 0;
+    let spent = 0;
     const now = new Date();
     const monthDays = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
     now.setTime(now.getTime() - (now.getTimezoneOffset() * 60000));
@@ -91,7 +117,8 @@ function Overview() {
       switch(activeTab) {
 	case "Today": return rows.filter((row) => {return row.date === now.toISOString().split("T")[0]})
 	case "Month": return rows.filter((row) => { 
-	  return row.date.substring(6, 8) === now.toISOString().split("T")[0].substring(6, 8)})
+	  return row.date.substring(6, 8) === now.toISOString().split("T")[0].substring(6, 8)
+	})
 	  case "Week": return rows.filter((row) => { const date = new Date(row.date);
 	  return date > firstDayOfWeek && date < lastDayOfWeek 
 	})
@@ -103,7 +130,8 @@ function Overview() {
       	case "Today": return budget / monthDays
 	case "Month": return budget
 	case "Week": return budget / 7
-      }})
+    }})
+
 
     const chooseType = ((currRows, type) => {
       switch(type) {
@@ -112,6 +140,8 @@ function Overview() {
 	case "Meal Plan": return currRows.reduce((acc, curr) => acc + curr.m_total, 0)
       }
     })
+    
+
     
     const currRows = chooseTime(activeTab, rows)
 
@@ -143,11 +173,9 @@ function Overview() {
 
   return (
     <div className="overview-container">
-      
       <div className="greeting">
         Welcome back, <span className="user-name">{username}</span>
       </div>
-
       {/* Budget Card with Tabs */}
       <div className="tabbed-budget-container">
         <div className="tabs">
@@ -164,15 +192,25 @@ function Overview() {
         <div className="budget-card">
           <h2 className="card-title">Budget Overview</h2>
           <div className="budget-details">
-            {renderBudgetDetails("Grocery", budget.grocery)}
-            {renderBudgetDetails("Personal", budget.personal)}
-            {renderBudgetDetails("Meal Plan", budget.mealPlan)}
+            {renderBudgetDetails("Grocery", budget.groceryBudget)}
+            {renderBudgetDetails("Personal", budget.personalBudget)}
+            {renderBudgetDetails("Meal Plan", budget.mealplanBudget)}
           </div>
         </div>
       </div>
-      
       <button className="table-button" onClick={() => navigate("/table")}> View Table → </button>
-      
+      <div style={{position: "relative", bottom: "375px", 
+      right: "350px"}}>
+        <button onClick={() => updateBudget("groceryBudget")}>Edit Grocery Budget</button>
+      </div>  
+      <div style={{position: "relative", bottom: "245px",
+      right: "350px"}}>
+        <button type="submit" onClick={() => updateBudget("personalBudget")}>Edit Personal Budget</button>
+      </div>
+      <div style={{position: "relative", bottom: "115px",
+      right: "350px"}}>
+        <button onClick={() => updateBudget("mealplanBudget")}>Edit Meal Plan Budget</button>
+      </div>
     </div>
   );
 }

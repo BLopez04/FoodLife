@@ -18,6 +18,7 @@ const {
   getTableDayId,
   findTableByUserId,
   updateTotal,
+  updateBudget,
   deleteUser,
   deleteDay,
   deleteItem
@@ -314,6 +315,22 @@ app.post("/users/table/days/:dayName/:category", authenticateUser, (req, res) =>
       console.error("Error in getId call", error);
       res.status(500).send(error.message);
     });
+});
+
+app.post("/users/budget", authenticateUser, (req, res) => {
+  const { budgetType, budget } = req.body;
+  getId(req).then((id) => {
+    if(!id) {
+      throw new Error("User Id Not Found")
+    }
+    updateBudget(id, budgetType, budget)
+    .then((result) => {
+      return res.status(200).send(result)
+    })
+  })
+  .catch((error) => {
+    console.log(error)
+  })
 });
 
 app.delete("/users", authenticateUser, (req, res) => {
