@@ -6,7 +6,6 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   padding-left: 50px;
@@ -93,50 +92,4 @@ body {
 
 .loginButton:hover {
   background-color: #2c974b;
-}
-
-.featuresSection {
-  padding: 50px 20px;
-  text-align: center;
-}
-
-.featuresTitle {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-  color: #24292E;
-}
-
-.featuresContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-}
-
-.featureItem {
-  background-color: #E4FAE4;
-  border: 1px solid #d1e7dd;
-  border-radius: 10px;
-  padding: 20px;
-  max-width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.featureItem h3 {
-  font-size: 1.5rem;
-  color: #2ea44f;
-  margin-bottom: 10px;
-}
-
-.featureItem p {
-  font-size: 1rem;
-  color: #24292E;
-}
-
-.foodImage {
-  width: 73%;
-  height: auto;
-  transform: translate(47%, -70%);
 }

@@ -68,6 +68,8 @@ function Login() {
 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
 
+      <button className="back-button" onClick={() => navigate("/")}> ← Back </button>
+      
       <button onClick={handleSignIn} className="signin-button">Sign In</button>
     </div>
   );

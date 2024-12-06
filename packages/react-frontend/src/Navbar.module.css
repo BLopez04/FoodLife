@@ -1,0 +1,45 @@
+/* src/Navbar.module.css */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  background-color: #c0e4c6;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(125, 175, 135);
+  cursor: pointer;
+}
+
+.navLinks {
+  display: flex;
+  gap: 1rem;
+}
+
+.navButton,
+.activeNavButton {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  line-height: 1.5;
+  border-radius: 5px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navButton:hover {
+  background-color: #a6c8ac;
+}
+
+.activeNavButton {
+  color: #6ea379;
+}

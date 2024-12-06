@@ -2,61 +2,68 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import classes from './Landing.module.css';
+import classes from "./Landing.module.css";
 
+import graphic from "./images/Landing-Graphic.png";
+import Navbar from "./Navbar";
 
-// Images TODO need some images
-import food1 from './images/Foo.jpg';
-import food2 from './images/FoodIconTwo.jpg';
-import food3 from './images/FoodIconThree.jpg';
-import food4 from './images/HealthyFoodIcon.png';
+function Landing() {
+  const navigate = useNavigate();
+  return (
+    <div>
+      <Navbar />
+      <div className={classes.container}>
+        <div className={classes.landingContent}>
+          <h1 className={classes.bigText}>
+            Welcome to the start of your new{" "}
+            <span className={classes.bigFoodLife}>FoodLife</span>
+          </h1>
+          <p className={classes.descriptionText}>
+            Stay within your personalized limits. Keep track of your personal,
+            EBT, and/or meal plan budgets with the help of FoodLife.
+          </p>
 
-
-function Landing(){
-    const navigate = useNavigate();
-    return (
-        <div className={classes.container}>
-            <div className={classes.item1}>
-                <div className={classes.module}>
-                    <h1 className={classes.item1Title}> Foodlife </h1>
-                    <p className={classes.item1Text}>
-                        a fresh, easy-to-use app built to help adults and college students keep track 
-                        of their dining plans and stick to their food budgets without the stress. 
-                        Whether you&#39;re a college student juggling meal swipes or someone just trying 
-                        to save a little extra cash each month, Foodlife makes it simple to stay on 
-                        top of your food spending
-                    </p> 
-
-                    <div className={classes.buttonGroup}>  
-                        <button className={classes.loginButton} onClick={() => navigate("/login")}> Login </button>
-                        <button className={classes.signButton} onClick={() => navigate("/signup")}> Sign Up </button>  
-                    </div>
-                </div> 
-            </div>
-
-            <div className={classes.item2}>
-                <div className={classes.circle}></div> 
-            </div>
-
-            <div className={classes.item3}>
-                <div> 
-                    <h3>Food1</h3>
-                    <p>Food, Food, Food!!!</p>
-                </div>
-
-                <div>
-                    <h3>Food2</h3>
-                    <p>More Food</p>
-                </div>v
-
-                <div>
-                    <h3>Food3</h3>
-                    <p>Productivity down the drain</p>
-                </div>
-            </div>
+          <div className={classes.buttonSignLog}>
+            <button
+              className={classes.loginButton}
+              onClick={() => navigate("/login")}>
+              Login
+            </button>
+            <button
+              className={classes.signButton}
+              onClick={() => navigate("/signup")}>
+              Sign Up
+            </button>
+          </div>
         </div>
-    );
+        <hr />
+      </div>
+
+      <div id="features" className={classes.featuresSection}>
+        <h2 className={classes.featuresTitle}>Features</h2>
+        <div className={classes.featuresContainer}>
+          <div className={classes.featureItem}>
+            <h3>Budgeting</h3>
+            <p>
+              Set and keep track of budgets in personal, meal plan, and grocery
+              budgets.
+            </p>
+          </div>
+          <div className={classes.featureItem}>
+            <h3>Meal Logging</h3>
+            <p>Easy-to-use table to log meals and their costs.</p>
+          </div>
+          <div className={classes.featureItem}>
+            <h3>Group Expenses</h3>
+            <p>
+              Personal, EBT, and Grocery categories allow for clear grouping and
+              division of budgeting and meal tracking.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Landing
-
+export default Landing;
