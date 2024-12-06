@@ -23,9 +23,10 @@ function Landing() {
                         <button className={classes.signButton} onClick={() => navigate("/signup")}>Sign Up</button>
                     </div>
                 </div>
-            
-                <img src={graphic} className={classes.foodImage}></img>
-                <hr />
+
+                <div className={classes.imgContainer}>
+                    <img src={graphic} className={classes.foodImage}></img>
+                </div>
             </div>
 
             <div id="features" className={classes.featuresSection}>
