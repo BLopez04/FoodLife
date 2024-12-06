@@ -143,8 +143,8 @@ body {
 
 .foodImage {
   position: absolute; 
-  bottom: -36%;
-  left: 33%;
+  bottom: -85px;
+  left: 490px;
   width: 73vw;
   height: auto;       
   object-fit: contain; 
