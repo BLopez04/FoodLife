@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addAuthHeader } from "./Auth"
+import { addAuthHeader, setToken } from "./Auth";
 import "../scss/_overview.scss";
 
 // https://foodlife.azurewebsites.net
@@ -10,7 +10,7 @@ const API_PREFIX = "https://foodlife.azurewebsites.net";
 function Overview() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Today");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("")
   const [budget, setBudget] = useState({ personalBudget: 0, groceryBudget: 0, mealplanBudget: 0 });
   const [rows, setRows] = useState([]);
 
@@ -26,7 +26,7 @@ function updateBudget(budgetType) {
 
   // Prompt user for input
   const input = prompt(`Enter New Monthly ${label}`);
-  
+
   // Empty Input / Cancel
   if (!input || input.trim() === "") {
     return;
@@ -79,6 +79,34 @@ function updateBudget(budgetType) {
       headers: addAuthHeader()
     });
     return promise;
+  }
+
+  function logOut() {
+    setToken("INVALID_TOKEN");
+    setUsername("");
+    navigate("/login");
+  }
+
+  function deleteUser() {
+    // Input for user deletion
+    const deluser = prompt(`Confirm Deletion? Type "${username}"`);
+    if (deluser === username) {
+      const promise = fetch(`${API_PREFIX}/users`, {
+        method: "DELETE",
+        headers: addAuthHeader({
+            "Content-Type": "application/json"
+          })
+      })
+      promise.then(() => {
+          setToken("INVALID_TOKEN");
+          setUsername("");
+          navigate("/login");
+        }
+      )
+    }
+    else {
+      alert(`Input does not match username. Try again.`)
+    }
   }
 
   useEffect(() => {
@@ -203,6 +231,12 @@ function updateBudget(budgetType) {
       <div className="greeting">
         Welcome back, <span className="user-name">{username}</span>
       </div>
+      <button className="logout-button" onClick={logOut}>
+        Log out
+      </button>
+      <button className="delete-user-button" onClick={deleteUser}>
+        Delete User Data
+      </button>
       {/* Budget Card with Tabs */}
       <div className="tabbed-budget-container">
         <div className="tabs">
@@ -230,7 +264,7 @@ function updateBudget(budgetType) {
               <button onClick={() => updateBudget("personalBudget")}>Personal</button>
               <button onClick={() => updateBudget("mealplanBudget")}>Meal Plan</button>
             </div>
-          </div>  
+          </div>
         </div>
       </div>
       <button className="table-button" onClick={() => navigate("/table")}>

@@ -246,7 +246,6 @@ function Modal({ isOpen, onClose, data, onItemDelete }) {
 function Table() {
   const [rows, setRows] = useState([]);
   const [username, setUsername] = useState("");
-  const [_id, setId] = useState("");
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setmodalData] = useState([]);
@@ -265,13 +264,6 @@ function Table() {
     getName()
       .then((res) => res.json())
       .then((json) => setUsername(json.username))
-      .catch((error) => {
-        console.log(error);
-      });
-
-    getId()
-      .then((res) => res.json())
-      .then((json) => setId(json._id))
       .catch((error) => {
         console.log(error);
       });
@@ -316,13 +308,6 @@ function Table() {
   }
 
   const navigate = useNavigate();
-
-  function logOut() {
-    setToken("INVALID_TOKEN");
-    setUsername("");
-    setId("");
-    navigate("/login");
-  }
 
   const updateList = (row) => {
     const index = rows.findIndex((v) => v.date === row.date);
@@ -490,10 +475,10 @@ function Table() {
     <div className="page-container">
       <div className="header">
         <h1>
-          Welcome, {username}, {_id}
+          {username}&#39;s Table
         </h1>
       </div>
-      <input type="button" value="LogOut" onClick={logOut} />
+
       <div className="form">
         <h2>Add Item</h2>
         <Form handleSubmit={updateList} />

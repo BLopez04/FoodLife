@@ -150,21 +150,6 @@ function deleteUser(id) {
   return userModel.findByIdAndDelete(id);
 }
 
-// function deleteItem(userId, dayId, category, itemId) {
-//   return userModel.findById(id).then((user) => {
-//     const day = user.table.tableDays.id(dayId);
-//     const idx = day[category].findIndex(
-//       (item) => itemId === item._id.toString()
-//     );
-//     if (idx === -1) {
-//       throw new Error("Resource not found");
-//     }
-
-//     day[category].splice(idx, 1);
-//     return user.save();
-//   });
-// }
-
 function deleteItem(userId, dayName, category, itemId) {
   return getTableDayId(userId, dayName).then((dayId) => {
     if (!dayId) {
