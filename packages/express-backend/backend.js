@@ -44,7 +44,6 @@ const corsOptions = {
 };
 */
 
-console.log(ALLOWED_ORIGIN);
 console.log(MONGO_CONNECTION_STRING);
 
 app.use(cors());

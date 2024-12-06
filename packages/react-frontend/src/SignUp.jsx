@@ -3,10 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
 
-// Move the INVALID TOKEN, TOKEN etc into the Auth.js file
-// Use localStorage to have the token persists between pages (and access it)
-// Use the create auth header
-
 const API_PREFIX = "http://localhost:8000";
 
 function SignUp() {
