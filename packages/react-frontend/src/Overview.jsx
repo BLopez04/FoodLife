@@ -156,7 +156,7 @@ function updateBudget(budgetType) {
       switch(activeTab) {
       	case "Today": return budget / monthDays
 	case "Month": return budget
-	case "Week": return budget / 7
+	case "Week": return budget / 4.3
     }})
 
 
