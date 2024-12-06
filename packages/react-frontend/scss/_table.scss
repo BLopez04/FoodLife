@@ -4,6 +4,115 @@
   min-height: 100vh;
   background-color: #f9fafb;
 
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #000;
+        }
+      }
+
+      .modal-inner {
+        margin-top: 1rem;
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background-color: white;
+
+          thead {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 10;
+
+            th {
+              padding: 1rem;
+              text-align: left;
+              font-weight: 600;
+              color: #4b5563;
+            }
+          }
+
+          tbody {
+            tr {
+              &:hover {
+                background-color: #f9fafb;
+              }
+
+              td {
+                padding: 1rem;
+
+                .open-modal {
+                  background-color: #007bff;
+                  color: white;
+                  border: none;
+                  padding: 0.5rem 1rem;
+                  border-radius: 0.25rem;
+                  cursor: pointer;
+                  transition: background-color 0.3s ease;
+
+                  &:hover {
+                    background-color: #0173ed;
+                  }
+                }
+
+                .delete {
+                  padding: 0.5rem 1rem;
+                  background-color: #ef4444;
+                  color: white;
+                  border: none;
+                  border-radius: 0.375rem;
+                  cursor: pointer;
+                  transition: background-color 0.2s;
+
+                  &:hover {
+                    background-color: #dc2626;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
   .form {
     padding: 1rem;
     margin: 0 auto;
@@ -80,10 +189,8 @@
   }
 
   .table {
+    padding: 1rem;
     border-top: 1px solid #e5e7eb;
-    overflow-x: auto;
-    overflow-y: auto;
-    max-height: 60.5vh;
 
     table {
       width: 100%;
@@ -99,6 +206,7 @@
         z-index: 10;
 
         th {
+          width: 12.5%;
           padding: 1rem;
           text-align: left;
           font-weight: 600;
@@ -123,7 +231,21 @@
             word-wrap: break-word;
             max-width: 100px;
 
-            button {
+            .open-modal {
+              background-color: #007bff;
+              color: white;
+              border: none;
+              padding: 0.5rem 1rem;
+              border-radius: 0.25rem;
+              cursor: pointer;
+              transition: background-color 0.3s ease;
+
+              &:hover {
+                background-color: #0173ed;
+              }
+            }
+
+            .delete {
               padding: 0.5rem 1rem;
               background-color: #ef4444;
               color: white;
