@@ -180,7 +180,7 @@ function Modal({ isOpen, onClose, data, onItemDelete }) {
   if (!isOpen) return null;
 
   const deleteItem = (day, category, id) =>
-    fetch(`http://localhost:8000/users/table/days/${day}/${category}/${id}`, {
+    fetch(`${API_PREFIX}/users/table/days/${day}/${category}/${id}`, {
       method: "DELETE",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -417,7 +417,7 @@ function Table() {
   }
 
   function deleteDay(dayName) {
-    return fetch(`http://localhost:8000/users/table/days/${dayName}`, {
+    return fetch(`${API_PREFIX}/users/table/days/${dayName}`, {
       method: "DELETE",
       headers: addAuthHeader({
         "Content-Type": "application/json"
