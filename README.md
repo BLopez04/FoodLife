@@ -14,3 +14,6 @@ Code should work as expected afterwards. Tested with copying my backend/frontend
 
 ## Class Diagram
 ![class diagram](class-diagram.png)
+
+## Link To Docs
+See docs [here](/docs)
