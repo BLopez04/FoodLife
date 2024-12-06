@@ -32,6 +32,9 @@ function MyApp() {
         <Route path="/table" element={<Table />}>
           {" "}
         </Route>
+        <Route path="/overview" element={<Overview />}>
+          {" "}
+        </Route>
       </Routes>
     </div>
   );
