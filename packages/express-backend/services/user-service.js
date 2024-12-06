@@ -136,6 +136,16 @@ function updateTotal(id, dayId, totalCategory, val) {
     });
 }
 
+function updateBudget(id, budgetType, budget) {
+  return userModel.updateOne(
+  { _id: id }, {[`table.${budgetType}`]: budget })
+  .catch((error) => {
+    console.log(error)
+    throw error;
+  })
+}
+
+
 function deleteUser(id) {
   return userModel.findByIdAndDelete(id);
 }
@@ -218,6 +228,7 @@ export default {
   getTableDayId,
   addItemToDay,
   updateTotal,
+  updateBudget,
   deleteUser,
   deleteDay,
   deleteItem
