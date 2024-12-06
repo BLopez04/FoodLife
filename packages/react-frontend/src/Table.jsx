@@ -509,6 +509,9 @@ function Table() {
           />
         </table>
       </div>
+      
+      <button className="overview-button" onClick={() => navigate("/overview")}> ← Back To Overview </button>
+      
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

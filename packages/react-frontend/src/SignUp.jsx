@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
+import "../scss/_signup.scss";
 
 // https://foodlife.azurewebsites.net
 const API_PREFIX = "https://foodlife.azurewebsites.net";
@@ -47,7 +48,7 @@ function SignUp() {
             setToken(payload.token);
             alert("Sign-up successful!");
             setErrorMessage("");
-            navigate("/table");
+            navigate("/overview");
           }
         })
         .catch((error) => {

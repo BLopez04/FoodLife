@@ -32,7 +32,7 @@ function Login() {
         setToken(payload.token);
         alert("Login successful!");
         setErrorMessage("");
-        navigate("/table");
+        navigate("/overview");
         })
       .catch((error) => {
         setErrorMessage(error.message);
