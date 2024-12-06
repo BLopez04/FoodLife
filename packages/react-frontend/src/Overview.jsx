@@ -90,10 +90,11 @@ function Overview() {
 
       switch(activeTab) {
 	case "Today": return rows.filter((row) => {return row.date === now.toISOString().split("T")[0]})
-	case "Month": return rows.filter((row) => 
-	{return row.date.substring(6, 8) === now.toISOString().split("T")[0].substring(6, 8)})
-	case "Week": return rows.filter((row) => {const date = new Date(row.date);
-	return date > firstDayOfWeek && date < lastDayOfWeek })
+	case "Month": return rows.filter((row) => { 
+	  return row.date.substring(6, 8) === now.toISOString().split("T")[0].substring(6, 8)})
+	  case "Week": return rows.filter((row) => { const date = new Date(row.date);
+	  return date > firstDayOfWeek && date < lastDayOfWeek 
+	})
       }
     })
 
@@ -131,7 +132,7 @@ function Overview() {
 	    <span>${(spent).toFixed(2)}</span>
 	  </div>
 	  <div className="value-box">
-	    <p>Total</p>
+	    <p>Remaining</p>
 	    <span>${(budget - spent).toFixed(2)}</span>
 	  </div>
 	</div>
