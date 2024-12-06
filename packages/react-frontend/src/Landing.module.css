@@ -142,10 +142,10 @@ body {
 }
 
 .foodImage {
-  position: absolute;  /* Keeps image in a fixed position */
+  position: absolute; 
   bottom: -36%;
   left: 33%;
-  width: 73vw;         /* Makes image width 20% of the viewport width */
-  height: auto;        /* Maintain aspect ratio */
-  object-fit: contain; /* Ensures the image doesn't stretch */
+  width: 73vw;
+  height: auto;       
+  object-fit: contain; 
 }
