@@ -2,7 +2,7 @@
 An innovative new app that tracks dining plans and monthly budgets for money-conscious adults and college students.
 
 Hosted @ https://ambitious-grass-040551c1e.4.azurestaticapps.net/ using "deploy" branch
-View demo ![here](https://drive.google.com/file/d/1tFxn92rgK3udP31iTwJZI5mNWu93-_eY/view?usp=sharing)
+View demo [here](https://drive.google.com/file/d/1tFxn92rgK3udP31iTwJZI5mNWu93-_eY/view?usp=sharing)
 To get the Repo up and running on your own device:
 
 1. Git clone the repository
