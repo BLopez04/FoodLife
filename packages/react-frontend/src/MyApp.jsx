@@ -8,20 +8,36 @@ import SignUp from "./SignUp";
 import About from "./About";
 import Reviews from "./Reviews";
 import Table from "./Table";
+import Overview from "./Overview";
 
-function MyApp(){
-    return(
-        <div className="app-container">
-            <Routes> 
-                <Route path="/" element={<Landing />}> </Route>
-                <Route path="/login" element={<Login />}> </Route>
-                <Route path="/signup" element={<SignUp />}> </Route>
-                <Route path="/about" element={<About />}> </Route>
-                <Route path="/reviews" element={<Reviews />}> </Route>
-		<Route path="/table" element={<Table />}> </Route>
-            </Routes>
-        </div>
-    );
+function MyApp() {
+  return (
+    <div className="app-container">
+      <Routes>
+        <Route path="/" element={<Landing />}>
+          {" "}
+        </Route>
+        <Route path="/login" element={<Login />}>
+          {" "}
+        </Route>
+        <Route path="/signup" element={<SignUp />}>
+          {" "}
+        </Route>
+        <Route path="/about" element={<About />}>
+          {" "}
+        </Route>
+        <Route path="/reviews" element={<Reviews />}>
+          {" "}
+        </Route>
+        <Route path="/table" element={<Table />}>
+          {" "}
+        </Route>
+        <Route path="/overview" element={<Overview />}>
+          {" "}
+        </Route>
+      </Routes>
+    </div>
+  );
 }
 
-export default MyApp
+export default MyApp;

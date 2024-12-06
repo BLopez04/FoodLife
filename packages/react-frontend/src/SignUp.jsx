@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "./Auth.js";
+import "../scss/_signup.scss";
 
 const API_PREFIX = "http://localhost:8000";
 
@@ -46,7 +47,7 @@ function SignUp() {
             setToken(payload.token);
             alert("Sign-up successful!");
             setErrorMessage("");
-            navigate("/table");
+            navigate("/overview");
           }
         })
         .catch((error) => {
