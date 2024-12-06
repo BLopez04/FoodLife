@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { addAuthHeader } from "./Auth"
 import "../scss/_overview.scss";
 
-const API_PREFIX = "http://localhost:8000";
+// https://foodlife.azurewebsites.net
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 
 function Overview() {

@@ -26,6 +26,10 @@ function SignUp() {
     if (!username || !password) {
       setErrorMessage("Username and Password required");
       return;
+    }
+    if (!email || !validateEmail(email)) {
+      setErrorMessage("Email is invalid");
+      return;
     } else {
       fetch(`${API_PREFIX}/signup/`, {
           method: "POST",
