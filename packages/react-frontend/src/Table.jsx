@@ -4,7 +4,8 @@ import { addAuthHeader, setToken } from "./Auth.js";
 
 import "../scss/_table.scss";
 
-const API_PREFIX = "http://localhost:8000";
+// https://foodlife.azurewebsites.net
+const API_PREFIX = "https://foodlife.azurewebsites.net";
 
 function Form(props) {
   const [data, setData] = useState({
