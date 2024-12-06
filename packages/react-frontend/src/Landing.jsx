@@ -15,7 +15,7 @@ function Landing() {
             <Navbar />
             <div className={classes.container}>
                 <div className={classes.landingContent}>
-                    <h1 className={classes.bigText}>Welcome to the start of your new <span className={classes.bigFoodLife}>FoodLife</span>.</h1>
+                    <h1 className={classes.bigText}>Welcome to the start of your new <span className={classes.bigFoodLife}>FoodLife</span></h1>
                     <p className={classes.descriptionText}>Stay within your personalized limits. Keep track of your personal, EBT, and/or meal plan budgets with the help of FoodLife.</p>
                     
                     <div className={classes.buttonSignLog}>
