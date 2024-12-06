@@ -4,12 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import classes from './Landing.module.css';
 
-
-// Images TODO need some images
-import food1 from './images/Foo.jpg';
-import food2 from './images/FoodIconTwo.jpg';
-import food3 from './images/FoodIconThree.jpg';
-import food4 from './images/HealthyFoodIcon.png';
 import graphic from './images/Landing-Graphic.png';
 import Navbar from "./Navbar";
 
@@ -29,6 +23,9 @@ function Landing() {
                         <button className={classes.signButton} onClick={() => navigate("/signup")}>Sign Up</button>
                     </div>
                 </div>
+
+                <img src={graphic} className={classes.foodImage}></img>
+                <hr />
             </div>
 
             <div id="features" className={classes.featuresSection}>

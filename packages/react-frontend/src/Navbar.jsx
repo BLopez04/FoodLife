@@ -24,12 +24,6 @@ function Navbar() {
                 >
                     About
                 </NavLink>
-                <NavLink
-                    to="/reviews"
-                    className={({ isActive }) => isActive ? classes.activeNavButton : classes.navButton}
-                >
-                    Reviews
-                </NavLink>
             </div>
         </nav>
     );
