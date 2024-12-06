@@ -36,11 +36,6 @@ function Landing() {
             </button>
           </div>
         </div>
-
-        <img
-          src={graphic}
-          className={classes.foodImage}
-          style={{ marginTop: "12%" }}></img>
         <hr />
       </div>
 
