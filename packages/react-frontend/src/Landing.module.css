@@ -136,7 +136,9 @@ body {
 }
 
 .foodImage {
-  width: 73%;
+  position: relative;
+  width:  1100px;
   height: auto;
-  transform: translate(47%, -70%);
+  bottom: 720px;
+  left: 480px;
 }
