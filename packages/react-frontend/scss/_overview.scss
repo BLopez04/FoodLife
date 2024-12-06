@@ -128,6 +128,49 @@
       }      
     }
   }
+  .budget-actions {
+    margin-top: 20px;
+  
+    .actions-header {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #2ea44f;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  
+    .action-buttons {
+      display: flex;
+      width: 100%; /* Make buttons span the full width of the card */
+  
+      button {
+        flex: 1; /* Distribute buttons equally */
+        padding: 15px 0;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #2ea44f;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+  
+        /* Remove rounded corners for sleek look */
+        border-radius: 0;
+  
+        /* Add borders only to separate buttons */
+        &:not(:last-child) {
+          border-right: 1px solid white;
+        }
+  
+        /* Transition for hover effect */
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #367748;
+        }
+      }
+    }
+  }  
 }
 
 .table-button {
@@ -150,4 +193,3 @@
     background-color: darken(#ceebdb, 10%);
   }
 }
-

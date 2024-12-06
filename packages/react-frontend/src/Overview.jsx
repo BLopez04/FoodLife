@@ -13,32 +13,58 @@ function Overview() {
   const [budget, setBudget] = useState({ personalBudget: 0, groceryBudget: 0, mealplanBudget: 0 });
   const [rows, setRows] = useState([]);
 
-  function updateBudget(budgetType) {
-    const input = prompt(`Enter new ${budgetType}`)
-    if(input) {
-      const newBudget = Number.parseFloat(input)
-      if(!newBudget) {
-	alert("Please enter a valid number")
-      }
-      fetch(`${API_PREFIX}/users/budget`, {
-	method: "POST",
-	headers: addAuthHeader({
-	    "Content-Type": "application/json"
-	  }),
-	  body: JSON.stringify({budgetType: budgetType, budget: newBudget})
-      }).then((res) => { 
-	if(res.status == 200) {
-	  setBudget(prevBudget => {
-	    const nextBudget = Object.assign({}, prevBudget);
-	    nextBudget[budgetType] = newBudget
-	    return nextBudget;
-	  });
-	}})
-      .catch((error) => {
-	console.log(error);
-      })
-    } 
+function updateBudget(budgetType) {
+  const budgetLabels = {
+    groceryBudget: "Grocery Budget",
+    personalBudget: "Personal Budget",
+    mealplanBudget: "Meal Plan Budget",
+  };
+
+  // Get user-friendly label for the current budget type
+  const label = budgetLabels[budgetType];
+
+  // Prompt user for input
+  const input = prompt(`Enter New Monthly ${label}`);
+  
+  // Empty Input / Cancel
+  if (!input || input.trim() === "") {
+    return;
   }
+  
+  const newBudget = parseFloat(input);
+
+  if (isNaN(newBudget)) {
+    alert("Please enter a valid number.");
+    return;
+  }
+
+  // Make API call to update the budget
+  fetch(`${API_PREFIX}/users/budget`, {
+    method: "POST",
+    headers: addAuthHeader({
+      "Content-Type": "application/json",
+    }),
+    body: JSON.stringify({ budgetType, budget: newBudget }),
+  })
+    .then((res) => {
+      if (res.status === 200) {
+        // Update state with new budget
+        setBudget((prevBudget) => {
+          const nextBudget = { ...prevBudget };
+          nextBudget[budgetType] = newBudget;
+          return nextBudget;
+        });
+        alert(`${label} updated successfully!`);
+      } else {
+        alert("Failed to update budget. Please try again.");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("An error occurred while updating the budget. Please try again.");
+    });
+}
+
 
   function fetchUsername() {
     const promise = fetch(`${API_PREFIX}/users`, {
@@ -196,21 +222,19 @@ function Overview() {
             {renderBudgetDetails("Personal", budget.personalBudget)}
             {renderBudgetDetails("Meal Plan", budget.mealplanBudget)}
           </div>
+          <div className="budget-actions">
+            <h3 className="actions-header">Edit Budgets</h3>
+            <div className="action-buttons">
+              <button onClick={() => updateBudget("groceryBudget")}>Grocery</button>
+              <button onClick={() => updateBudget("personalBudget")}>Personal</button>
+              <button onClick={() => updateBudget("mealplanBudget")}>Meal Plan</button>
+            </div>
+          </div>  
         </div>
       </div>
-      <button className="table-button" onClick={() => navigate("/table")}> View Table → </button>
-      <div style={{position: "relative", bottom: "375px", 
-      right: "350px"}}>
-        <button onClick={() => updateBudget("groceryBudget")}>Edit Grocery Budget</button>
-      </div>  
-      <div style={{position: "relative", bottom: "245px",
-      right: "350px"}}>
-        <button type="submit" onClick={() => updateBudget("personalBudget")}>Edit Personal Budget</button>
-      </div>
-      <div style={{position: "relative", bottom: "115px",
-      right: "350px"}}>
-        <button onClick={() => updateBudget("mealplanBudget")}>Edit Meal Plan Budget</button>
-      </div>
+      <button className="table-button" onClick={() => navigate("/table")}>
+        View Table →
+      </button>
     </div>
   );
 }
