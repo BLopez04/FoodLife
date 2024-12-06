@@ -26,7 +26,7 @@ function updateBudget(budgetType) {
 
   // Prompt user for input
   const input = prompt(`Enter New Monthly ${label}`);
-  
+
   // Empty Input / Cancel
   if (!input || input.trim() === "") {
     return;
@@ -86,6 +86,29 @@ function updateBudget(budgetType) {
     setUsername("");
     setId("");
     navigate("/login");
+  }
+
+  function deleteUser() {
+    // Input for user deletion
+    const deluser = prompt(`Confirm Deletion? Type "${username}"`);
+    if (deluser === username) {
+      const promise = fetch(`${API_PREFIX}/users`, {
+        method: "DELETE",
+        headers: addAuthHeader({
+            "Content-Type": "application/json"
+          })
+      })
+      promise.then(() => {
+          setToken("INVALID_TOKEN");
+          setUsername("");
+          setId("");
+          navigate("/login");
+        }
+      )
+    }
+    else {
+      alert(`Input does not match username. Try again.`)
+    }
   }
 
   useEffect(() => {
@@ -212,6 +235,9 @@ function updateBudget(budgetType) {
       </div>
       <button className="logout-button" onClick={logOut}>
         Log out
+      </button>
+      <button className="delete-user-button" onClick={deleteUser}>
+        Delete User Data
       </button>
       {/* Budget Card with Tabs */}
       <div className="tabbed-budget-container">

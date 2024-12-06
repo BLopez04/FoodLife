@@ -344,9 +344,13 @@ app.delete("/users", authenticateUser, (req, res) => {
       if (!id) {
         throw new Error("User Id Not Found");
       }
-      return deleteUser(id);
+      console.log(id)
+      return deleteUser(id).then(() => res.status(204).send())
+        .catch((error) => {
+          console.error(error.message);
+          res.status(404).send(error.message);
+        });;
     })
-    .then((result) => res.send(result));
 });
 
 app.delete(
