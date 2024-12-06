@@ -9,8 +9,7 @@ const API_PREFIX = "http://localhost:8000";
 function Overview() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Today");
-  const [username, setUsername] = useState("");
-  const [_id, setId]  = useState("");
+  const [username, setUsername] = useState("")
   const [budget, setBudget] = useState({ personalBudget: 0, groceryBudget: 0, mealplanBudget: 0 });
   const [rows, setRows] = useState([]);
 
@@ -84,7 +83,6 @@ function updateBudget(budgetType) {
   function logOut() {
     setToken("INVALID_TOKEN");
     setUsername("");
-    setId("");
     navigate("/login");
   }
 
@@ -101,7 +99,6 @@ function updateBudget(budgetType) {
       promise.then(() => {
           setToken("INVALID_TOKEN");
           setUsername("");
-          setId("");
           navigate("/login");
         }
       )
