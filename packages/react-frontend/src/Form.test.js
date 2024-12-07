@@ -9,7 +9,7 @@ describe('Form Component Tests', () => {
     const { getByLabelText, getByText } = render(<Form handleSubmit={jest.fn()} />);
     expect(getByLabelText(/date/i)).toHaveValue('');
     expect(getByLabelText(/item/i)).toHaveValue('');
-    expect(getByLabelText(/price/i)).toHaveValue('');
+    expect(getByLabelText(/price/i)).toHaveValue(null);
     expect(getByLabelText(/type/i)).toHaveValue('personal');
     expect(getByText(/submit/i)).toBeInTheDocument();
   });
@@ -24,7 +24,7 @@ describe('Form Component Tests', () => {
     expect(getByLabelText(/item/i)).toHaveValue('Book');
 
     fireEvent.change(getByLabelText(/price/i), { target: { value: '25.00' } });
-    expect(getByLabelText(/price/i)).toHaveValue('25.00');
+    expect(getByLabelText(/price/i)).toHaveValue(25.00);
 
     fireEvent.change(getByLabelText(/type/i), { target: { value: 'meal' } });
     expect(getByLabelText(/type/i)).toHaveValue('meal');
@@ -51,7 +51,7 @@ describe('Form Component Tests', () => {
     // Ensure form resets
     expect(getByLabelText(/date/i)).toHaveValue('');
     expect(getByLabelText(/item/i)).toHaveValue('');
-    expect(getByLabelText(/price/i)).toHaveValue('');
+    expect(getByLabelText(/price/i)).toHaveValue(null);
     expect(getByLabelText(/type/i)).toHaveValue('personal');
   });
 
@@ -59,7 +59,7 @@ describe('Form Component Tests', () => {
     const { getByLabelText } = render(<Form handleSubmit={jest.fn()} />);
 
     fireEvent.change(getByLabelText(/price/i), { target: { value: '-10' } });
-    expect(getByLabelText(/price/i)).toHaveValue('-10'); // Input accepts it, logic can sanitize if needed
+    expect(getByLabelText(/price/i)).toHaveValue(-10); // Input accepts it, logic can sanitize if needed
   });
 });
 
