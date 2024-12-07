@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "npm run lint",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "http-server": "^14.1.1",
