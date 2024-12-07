@@ -6,7 +6,7 @@
     "start": "npm run -w express-backend",
     "dev": "npm run -w express-backend",
     "lint": "npx eslint . && npx prettier --check .",
-    "test": "echo \"Error: no test specified\"",
+    "test": "npm run test -w react-frontend",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "author": "",
