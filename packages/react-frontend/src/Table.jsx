@@ -1,95 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addAuthHeader, setToken } from "./Auth.js";
+import Form from "./Form";
 
 import "../scss/_table.scss";
 
 const API_PREFIX = "http://localhost:8000";
-
-function Form(props) {
-  const [data, setData] = useState({
-    date: "",
-    price: "",
-    name: "",
-    type: "personal"
-  });
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  }
-
-  function submitForm() {
-    const formattedData = {
-      date: data.date,
-      price: parseFloat(data.price || 0),
-      name: data.name,
-      type: data.type
-    };
-    props.handleSubmit(formattedData);
-    setData({
-      date: "",
-      price: "",
-      name: "",
-      type: "personal"
-    });
-  }
-
-  return (
-    <form>
-      <label htmlFor="date">Date</label>
-      <input
-        type="date"
-        name="date"
-        id="date"
-        value={data.date}
-        onChange={handleChange}
-      />
-      <label htmlFor="name">Item</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        value={data.name}
-        onChange={handleChange}
-      />
-      <div className="form-row">
-        <div className="price-column">
-          <label htmlFor="price">Price</label>
-          <div className="dollar-input">
-            <span className="dollar-sign">$</span>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              value={data.price}
-              onChange={handleChange}
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-            />
-          </div>
-        </div>
-        <div className="type-column">
-          <label htmlFor="type">Type</label>
-          <select
-            id="type"
-            name="type"
-            value={data.type}
-            onChange={handleChange}>
-            <option value="personal">Personal</option>
-            <option value="meal">Meal Plan</option>
-            <option value="grocery">Grocery</option>
-          </select>
-        </div>
-      </div>
-      <input type="button" value="Submit" onClick={submitForm} />
-    </form>
-  );
-}
 
 function TableHeader() {
   return (
@@ -473,9 +389,7 @@ function Table() {
   return (
     <div className="page-container">
       <div className="header">
-        <h1>
-          {username}&#39;s Table
-        </h1>
+        <h1>{username}&#39;s Table</h1>
       </div>
 
       <div className="form">
@@ -493,9 +407,12 @@ function Table() {
           />
         </table>
       </div>
-      
-      <button className="overview-button" onClick={() => navigate("/overview")}> ← Back To Overview </button>
-      
+
+      <button className="overview-button" onClick={() => navigate("/overview")}>
+        {" "}
+        ← Back To Overview{" "}
+      </button>
+
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
