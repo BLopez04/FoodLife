@@ -29,3 +29,4 @@ dist-ssr
 /scss/*.css.map
 
 .env
+coverage
