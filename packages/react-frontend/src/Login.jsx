@@ -34,7 +34,7 @@ function Login() {
         navigate("/overview");
         })
       .catch((error) => {
-        setErrorMessage(error.message);
+        setErrorMessage("Invalid username or password.");
       })
   };
 
